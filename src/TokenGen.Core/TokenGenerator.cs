@@ -43,8 +43,8 @@ namespace TokenGen.Core
             }
 
             var token = new StringBuilder();
-            var rules = new List<IGenerateRule>();
-            var symbols = SymbolSet.JoinTokenSymbols(options.SymbolFlags);
+            var rules = new List<ITokenRule>();
+            var symbols = SymbolSet.GetTokenSymbols(options.SymbolFlags);
 
             do
             {

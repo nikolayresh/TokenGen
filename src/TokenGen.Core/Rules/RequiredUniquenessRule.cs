@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace TokenGen.Core.Rules
 {
-    internal class RequiredUniquenessRule : BaseGenerateRule
+    internal class RequiredUniquenessRule : BaseTokenRule
     {
         private readonly Dictionary<char, StructRef<int>> _repeatsMap;
 
@@ -29,9 +29,9 @@ namespace TokenGen.Core.Rules
                repeats.Value++;
            }
 
-           var uniqueness = (int)(100 * ((decimal) _repeatsMap.Keys.Count / _repeatsMap.Values.Sum(x => x.Value)));
+           var uniquenessRate = 100 * ((decimal) _repeatsMap.Keys.Count / _repeatsMap.Values.Sum(x => x.Value));
 
-           return uniqueness >= Options.Uniqueness;
+           return uniquenessRate >= Options.UniquenessRate;
         }
     }
 }

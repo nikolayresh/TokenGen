@@ -1,8 +1,8 @@
 ﻿namespace TokenGen.Core.Rules
 {
-    internal abstract class BaseGenerateRule : IGenerateRule
+    internal abstract class BaseTokenRule : ITokenRule
     {
-        protected BaseGenerateRule(TokenOptions options)
+        protected BaseTokenRule(TokenOptions options)
         {
             Options = options;
         }

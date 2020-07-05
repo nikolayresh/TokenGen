@@ -32,7 +32,7 @@ namespace TokenGen.Core
         /// <summary>
         /// Builds a joined set of token symbols
         /// </summary>
-        public static string JoinTokenSymbols(Flags flags)
+        public static string GetTokenSymbols(Flags flags)
         {
             var sb = new StringBuilder();
 

@@ -1,23 +1,19 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 
 namespace TokenGen.Core
 {
     public sealed class TokenOptions : IOptions<TokenOptions>
     {
-        private const int FullyUnique = 100;
+        private const decimal MaxUniquenessRate = 100.0M;
 
         private string _prefix;
         private string _postfix;
         private int _length;
-        private int _uniqueness;
+        private decimal _uniquenessRate;
         private SymbolSet.Flags _sets;
-        private readonly Dictionary<char, SymbolEntry> _entries;
 
         public TokenOptions()
         {
-            _entries = new Dictionary<char, SymbolEntry>();
             _sets = SymbolSet.Flags.Digits;
             _length = -1;
         }
@@ -55,9 +51,9 @@ namespace TokenGen.Core
             return this;
         }
 
-        public TokenOptions WithUniqueness(int uniqueness)
+        public TokenOptions WithUniquenessRate(decimal uniqueness)
         {
-            _uniqueness = uniqueness;
+            _uniquenessRate = uniqueness;
             return this;
         }
 
@@ -84,14 +80,9 @@ namespace TokenGen.Core
             get => _sets;
         }
 
-        internal Dictionary<char, SymbolEntry> Entries
+        internal decimal UniquenessRate
         {
-            get => _entries;
-        }
-
-        internal int Uniqueness
-        {
-            get => _uniqueness;
+            get => _uniquenessRate;
         }
 
         TokenOptions IOptions<TokenOptions>.Value
