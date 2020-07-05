@@ -1,34 +1,34 @@
 ﻿using System.Text;
 
-namespace TokenGen.Core
+namespace TokenGen.Generator
 {
     /// <summary>
-    /// Interface of a randomly generated token
+    ///  Interface of a randomly generated alphanumeric token
     /// </summary>
     public interface IToken
     {
         /// <summary>
-        /// Gets full value of a generated token
+        ///     Gets full value of a generated token
         /// </summary>
         string Value { get; }
 
         /// <summary>
-        /// Gets prefix part of a generated token
+        ///     Gets prefix part of a generated token
         /// </summary>
         string Prefix { get; }
 
         /// <summary>
-        /// Gets postfix part of a generated token
+        ///     Gets postfix part of a generated token
         /// </summary>
         string Postfix { get; }
 
         /// <summary>
-        /// Gets value of a generated token without a prefix part
+        ///     Gets value of a generated token without prefix part
         /// </summary>
         string WithoutPrefix { get; }
 
         /// <summary>
-        /// Gets value of a generated token without postfix part
+        ///     Gets value of a generated token without postfix part
         /// </summary>
         string WithoutPostfix { get; }
 

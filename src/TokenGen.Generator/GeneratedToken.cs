@@ -1,11 +1,12 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
-namespace TokenGen.Core
+namespace TokenGen.Generator
 {
     internal sealed class GeneratedToken : IToken
     {
-        private readonly string _token;
         private readonly TokenOptions _options;
+        private readonly string _token;
 
         public GeneratedToken(string token, TokenOptions options)
         {
@@ -14,21 +15,21 @@ namespace TokenGen.Core
         }
 
         public string Value
-        {
-            get => Construct(TokenParts.Prefix | TokenParts.Body | TokenParts.Postfix);
-        }
+            => Construct(TokenParts.Prefix | TokenParts.Body | TokenParts.Postfix);
+
         public string Prefix { get; }
         public string Postfix { get; }
         public string WithoutPrefix { get; }
         public string WithoutPostfix { get; }
+
         public void CopyTo(StringBuilder sb)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void CopyTo(StringBuilder sb, TokenParts parts)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override string ToString()
@@ -40,15 +41,9 @@ namespace TokenGen.Core
         {
             var result = new StringBuilder();
 
-            if (parts.HasFlag(TokenParts.Prefix) && _options.Prefix != null)
-            {
-                result.Append(_options.Prefix);
-            }
+            if (parts.HasFlag(TokenParts.Prefix) && _options.Prefix != null) result.Append(_options.Prefix);
 
-            if (parts.HasFlag(TokenParts.Body))
-            {
-                result.Append(_token);
-            }
+            if (parts.HasFlag(TokenParts.Body)) result.Append(_token);
 
             return result.ToString();
         }

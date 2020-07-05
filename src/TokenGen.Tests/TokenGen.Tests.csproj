@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TokenGen.Core\TokenGen.Core.csproj" />
+    <ProjectReference Include="..\TokenGen.Core\TokenGen.Generator.csproj" />
+    <ProjectReference Include="..\TokenGen.Generator\TokenGen.Generator.csproj" />
   </ItemGroup>
 
 </Project>
