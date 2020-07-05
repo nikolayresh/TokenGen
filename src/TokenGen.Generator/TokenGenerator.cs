@@ -36,6 +36,7 @@ namespace TokenGen.Generator
                 }
 
                 tokenPayload = token.ToString();
+
             } while (rules.Count > 0 && !rules.TrueForAll(x => x.TryPass(tokenPayload)));
 
             return new GeneratedToken(tokenPayload, options);
@@ -55,6 +56,20 @@ namespace TokenGen.Generator
                 throw new ArgumentNullException(nameof(iOptions.Value));
             }
 
+            if (options.Length <= 0)
+            {
+                throw new ArgumentException(
+                    "Length of token must be a positive integer",
+                    nameof(iOptions.Value.Length));
+            }
+
+            if (options.DistinctionRate < 0.0M || options.DistinctionRate > 100.0M)
+            {
+                throw new ArgumentException(
+                    "Value of token distinction must be defined on range [0.0 .. 100.0]",
+                    nameof(iOptions.Value.DistinctionRate));
+            }
+
             return options;
         }
 
@@ -62,7 +77,20 @@ namespace TokenGen.Generator
         {
             var rules = new List<ITokenRule>();
 
-            if (options.UniquenessRate > 0.0M) rules.Add(new TokenUniquenessRule(options));
+            if (options.DistinctionRate > 0.0M)
+            {
+                rules.Add(new TokenDistinctionRule(options));
+            }
+
+            if (options.ExcludedAtStart != null)
+            {
+                rules.Add(new TokenNeverStartsWithRule(options));
+            }
+
+            if (options.ExcludedAtEnd != null)
+            {
+                rules.Add(new TokenNeverEndsWithRule(options));
+            }
 
             return rules;
         }
