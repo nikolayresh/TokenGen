@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using Microsoft.Extensions.Options;
 using TokenGen.Core.Rules;
@@ -43,8 +44,9 @@ namespace TokenGen.Core
             }
 
             var token = new StringBuilder();
-            var rules = new List<ITokenRule>();
+            var rules = ResolveRules(options);
             var symbols = SymbolSet.GetTokenSymbols(options.SymbolFlags);
+            string tokenPayload = null;
 
             do
             {
@@ -58,10 +60,24 @@ namespace TokenGen.Core
                     token.Append(symbols[number % symbols.Length]);
                 }
 
-            } while (rules.Count > 0 && !rules.TrueForAll(
-                        x => x.TryPass(token.ToString())));
+                tokenPayload = token.ToString();
 
-            return new GeneratedToken(token.ToString(), options);
+            } while (rules.Count > 0 && !rules.TrueForAll(
+                         x => x.TryPass(tokenPayload)));
+
+            return new GeneratedToken(tokenPayload, options);
+        }
+
+        private static List<ITokenRule> ResolveRules(TokenOptions options)
+        {
+            var rules = new List<ITokenRule>();
+
+            if (options.UniquenessRate > 0.0M)
+            {
+                rules.Add(new RequiredUniquenessRule(options));
+            }
+
+            return rules;
         }
     }
 }

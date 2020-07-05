@@ -7,7 +7,7 @@ namespace TokenGen.Core.Rules
     {
         private readonly Dictionary<char, StructRef<int>> _repeatsMap;
 
-        public RequiredUniquenessRule(TokenOptions options) : base(options)
+        internal RequiredUniquenessRule(TokenOptions options) : base(options)
         {
             _repeatsMap = new Dictionary<char, StructRef<int>>();
         }
