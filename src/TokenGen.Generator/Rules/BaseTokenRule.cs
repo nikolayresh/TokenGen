@@ -1,4 +1,4 @@
-﻿namespace TokenGen.Core.Rules
+﻿namespace TokenGen.Generator.Rules
 {
     internal abstract class BaseTokenRule : ITokenRule
     {

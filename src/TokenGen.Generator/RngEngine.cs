@@ -1,11 +1,11 @@
 ﻿using System.Security.Cryptography;
 
-namespace TokenGen.Core
+namespace TokenGen.Generator
 {
     internal static class RngEngine
     {
         /// <summary>
-        /// Generates random bytes of specified length
+        ///     Generates random bytes of specified length
         /// </summary>
         internal static byte[] NextBytes(int length)
         {

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
-using TokenGen.Core;
+﻿using NUnit.Framework;
+using TokenGen.Generator;
 
 namespace TokenGen.Tests
 {

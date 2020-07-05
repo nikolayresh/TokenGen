@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenGen.Core", "TokenGen.Core\TokenGen.Core.csproj", "{289C9FDB-4EA7-4A83-A6B2-167D2B557F45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenGen.Generator", "TokenGen.Generator\TokenGen.Generator.csproj", "{289C9FDB-4EA7-4A83-A6B2-167D2B557F45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenGen.Tests", "TokenGen.Tests\TokenGen.Tests.csproj", "{EAF52226-77AD-458F-AB0D-1B9EAECE3E2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenGen.Tests", "TokenGen.Tests\TokenGen.Tests.csproj", "{EAF52226-77AD-458F-AB0D-1B9EAECE3E2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

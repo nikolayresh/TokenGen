@@ -1,4 +1,4 @@
-﻿namespace TokenGen.Core
+﻿namespace TokenGen.Generator
 {
     internal sealed class StructRef<T> where T : struct
     {

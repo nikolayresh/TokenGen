@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TokenGen.Core
+namespace TokenGen.Generator
 {
     [Flags]
     public enum TokenParts : byte
