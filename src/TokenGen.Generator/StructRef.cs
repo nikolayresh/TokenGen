@@ -1,5 +1,8 @@
 ﻿namespace TokenGen.Generator
 {
+    /// <summary>
+    /// Class wrapper around structure
+    /// </summary>
     internal sealed class StructRef<T> where T : struct
     {
         private T _value;

@@ -9,14 +9,14 @@ namespace TokenGen.Generator
         /// </summary>
         internal static byte[] NextBytes(int length)
         {
-            var bytes = new byte[length];
+            var result = new byte[length];
 
             using (var rng = new RNGCryptoServiceProvider())
             {
-                rng.GetBytes(bytes);
+                rng.GetBytes(result);
             }
 
-            return bytes;
+            return result;
         }
     }
 }

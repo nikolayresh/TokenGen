@@ -43,11 +43,17 @@ namespace TokenGen.Generator
 
         private static TokenOptions ValidateOptions(IOptions<TokenOptions> iOptions)
         {
-            if (iOptions is null) throw new ArgumentNullException(nameof(iOptions));
+            if (iOptions is null)
+            {
+                throw new ArgumentNullException(nameof(iOptions));
+            }
 
             var options = iOptions.Value;
 
-            if (options is null) throw new ArgumentNullException(nameof(iOptions.Value));
+            if (options is null)
+            {
+                throw new ArgumentNullException(nameof(iOptions.Value));
+            }
 
             return options;
         }
@@ -56,7 +62,7 @@ namespace TokenGen.Generator
         {
             var rules = new List<ITokenRule>();
 
-            if (options.UniquenessRate > 0.0M) rules.Add(new RequiredUniquenessRule(options));
+            if (options.UniquenessRate > 0.0M) rules.Add(new TokenUniquenessRule(options));
 
             return rules;
         }
