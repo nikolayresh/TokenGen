@@ -1,31 +1,45 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Extensions.Options;
 
 namespace TokenGen.Generator
 {
     public sealed class TokenOptions : IOptions<TokenOptions>
     {
-        private const decimal MaxUniquenessRate = 100.0M;
+        private const decimal OptionalDistinctionRate = 0.0M;
+        private const decimal MaxDistinctionRate = 100.0M;
 
         private int _length;
         private string _prefix;
         private string _postfix;
         private SymbolSet.Flags _sets;
-        private decimal _uniquenessRate;
+        private decimal _distinctionRate;
+        private HashSet<char> _excludedAtStart;
+        private HashSet<char> _excludedAtEnd;
 
-        internal string Prefix => _prefix;
+        internal string Prefix
+        {
+            get => _prefix;
+        }
 
-        internal string Postfix => _postfix;
+        internal string Postfix
+        {
+            get => _postfix;
+        }
 
         /// <summary>
         ///     Gets length of a token to generate
         /// </summary>
-        internal int Length => _length;
+        internal int Length
+        {
+            get => _length;
+        }
 
         internal SymbolSet.Flags SymbolFlags => _sets;
 
-        internal decimal UniquenessRate
+        internal decimal DistinctionRate
         {
-            get => _uniquenessRate;
+            get => _distinctionRate;
         }
 
         TokenOptions IOptions<TokenOptions>.Value
@@ -57,6 +71,21 @@ namespace TokenGen.Generator
             return this;
         }
 
+        public TokenOptions WithMaximalDistinction()
+        {
+            _distinctionRate = MaxDistinctionRate;
+            return this;
+        }
+
+        public TokenOptions WithOptionalDistinction()
+        {
+            _distinctionRate = OptionalDistinctionRate;
+            return this;
+        }
+
+        /// <summary>
+        /// Includes digits into alphabet of token symbols
+        /// </summary>
         public TokenOptions WithDigits()
         {
             _sets |= SymbolSet.Flags.Digits;
@@ -69,10 +98,57 @@ namespace TokenGen.Generator
             return this;
         }
 
-        public TokenOptions WithUniquenessRate(decimal uniqueness)
+        public TokenOptions WithUpperLetters()
         {
-            _uniquenessRate = uniqueness;
+            _sets |= SymbolSet.Flags.UpperCaseLetters;
             return this;
+        }
+
+        public TokenOptions NeverStartsWith(char symbol)
+        {
+            var set = _excludedAtStart ??= new HashSet<char>();
+            set.Add(symbol);
+            return this;
+        }
+
+        public TokenOptions NeverStartsWith(IEnumerable<char> symbols)
+        {
+            if (symbols is null)
+            {
+                throw new ArgumentNullException(nameof(symbols));
+            }
+
+            var set = _excludedAtStart ??= new HashSet<char>();
+
+            foreach (var symbol in symbols)
+            {
+                set.Add(symbol);
+            }
+
+            return this;
+        }
+
+        public TokenOptions NeverEndsWith(char symbol)
+        {
+            var set = _excludedAtEnd ??= new HashSet<char>();
+            set.Add(symbol);
+            return this;
+        }
+
+        public TokenOptions WithDistinctionRate(decimal rate)
+        {
+            _distinctionRate = rate;
+            return this;
+        }
+
+        internal HashSet<char> ExcludedAtStart
+        {
+            get => _excludedAtStart;
+        }
+
+        internal HashSet<char> ExcludedAtEnd
+        {
+            get => _excludedAtEnd;
         }
     }
 }

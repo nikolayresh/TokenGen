@@ -12,5 +12,10 @@
             get => _value;
             set => _value = value;
         }
+
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
     }
 }
