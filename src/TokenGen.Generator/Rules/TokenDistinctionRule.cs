@@ -29,9 +29,9 @@ namespace TokenGen.Generator.Rules
                 repeats.Value++;
             }
 
-            var uniquenessRate = 100 * ((decimal) _repeatsMap.Keys.Count / _repeatsMap.Values.Sum(x => x.Value));
+            var distinctionRate = 100 * ((decimal) _repeatsMap.Keys.Count / _repeatsMap.Values.Sum(x => x.Value));
 
-            return uniquenessRate >= Options.DistinctionRate;
+            return distinctionRate >= Options.DistinctionRate;
         }
     }
 }

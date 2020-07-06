@@ -20,7 +20,21 @@ namespace TokenGen.Generator
         public static int CalculateLength(Flags flags)
         {
             var length = 0;
-            if (flags.HasFlag(Flags.Digits)) length += Digits.Length;
+
+            if (flags.HasFlag(Flags.Digits))
+            {
+                length += Digits.Length;
+            }
+
+            if (flags.HasFlag(Flags.LowerCaseLetters))
+            {
+                length += LowerLetters.Length;
+            }
+
+            if (flags.HasFlag(Flags.UpperCaseLetters))
+            {
+                length += UpperLetters.Length;
+            }
 
             return length;
         }

@@ -3,11 +3,20 @@
     /// <summary>
     /// Class wrapper around structure
     /// </summary>
-    internal sealed class StructRef<T> where T : struct
+    internal sealed class StructRef<TStruct> where TStruct : struct
     {
-        private T _value;
+        private TStruct _value;
 
-        public T Value
+        internal StructRef() : this(default)
+        {
+        }
+
+        internal StructRef(TStruct valueOnInit)
+        {
+            _value = valueOnInit;
+        }
+
+        public TStruct Value
         {
             get => _value;
             set => _value = value;
@@ -15,7 +24,7 @@
 
         public override string ToString()
         {
-            return Value.ToString();
+            return _value.ToString();
         }
     }
 }

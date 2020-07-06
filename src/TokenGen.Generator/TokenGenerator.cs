@@ -36,7 +36,6 @@ namespace TokenGen.Generator
                 }
 
                 tokenPayload = token.ToString();
-
             } while (rules.Count > 0 && !rules.TrueForAll(x => x.TryPass(tokenPayload)));
 
             return new GeneratedToken(tokenPayload, options);
@@ -66,8 +65,8 @@ namespace TokenGen.Generator
             if (options.DistinctionRate < 0.0M || options.DistinctionRate > 100.0M)
             {
                 throw new ArgumentException(
-                    "Value of token distinction must be defined on range [0.0 .. 100.0]",
-                    nameof(iOptions.Value.DistinctionRate));
+                    "Rate of token distinction must be defined on range [0,0 - 100,0]",
+                     nameof(iOptions.Value.DistinctionRate));
             }
 
             return options;
