@@ -14,7 +14,7 @@ namespace TokenGen.Generator
         /// <summary>
         ///     Generates a new random token using specified options
         /// </summary>
-        public static IToken Generate(IOptions<TokenOptions> iOptions)
+        public static IRandomToken Generate(IOptions<TokenOptions> iOptions)
         {
             var options = ValidateOptions(iOptions);
 
@@ -62,11 +62,11 @@ namespace TokenGen.Generator
                     nameof(iOptions.Value.Length));
             }
 
-            if (options.DistinctionRate < 0.0M || options.DistinctionRate > 100.0M)
+            if (options.UniquenessRate < 0.0M || options.UniquenessRate > 100.0M)
             {
                 throw new ArgumentException(
                     "Rate of token distinction must be defined on range [0,0 - 100,0]",
-                     nameof(iOptions.Value.DistinctionRate));
+                     nameof(iOptions.Value.UniquenessRate));
             }
 
             return options;
@@ -76,9 +76,9 @@ namespace TokenGen.Generator
         {
             var rules = new List<ITokenRule>();
 
-            if (options.DistinctionRate > 0.0M)
+            if (options.UniquenessRate > 0.0M)
             {
-                rules.Add(new TokenDistinctionRule(options));
+                rules.Add(new TokenUniquenessRule(options));
             }
 
             if (options.ExcludedAtStart != null)

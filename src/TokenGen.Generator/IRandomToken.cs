@@ -3,12 +3,12 @@
 namespace TokenGen.Generator
 {
     /// <summary>
-    ///  Interface of a randomly generated alphanumeric token
+    /// Interface of a randomly generated alphanumeric token
     /// </summary>
-    public interface IToken
+    public interface IRandomToken
     {
         /// <summary>
-        ///     Gets full value of a generated token
+        /// Gets full value of a generated token
         /// </summary>
         string Value { get; }
 
@@ -32,8 +32,13 @@ namespace TokenGen.Generator
         /// </summary>
         string WithoutPostfix { get; }
 
+        /// <summary>
+        /// Returns a boolean value whether token contains any digit symbol
+        /// </summary>
+        bool HasDigits { get; }
+
         void CopyTo(StringBuilder sb);
 
-        void CopyTo(StringBuilder sb, TokenParts parts);
+        void CopyTo(StringBuilder sb, RandomTokenParts parts);
     }
 }

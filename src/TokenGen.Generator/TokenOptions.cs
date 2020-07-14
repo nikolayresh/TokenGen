@@ -6,14 +6,14 @@ namespace TokenGen.Generator
 {
     public sealed class TokenOptions : IOptions<TokenOptions>
     {
-        private const decimal OptionalDistinctionRate = 0.0M;
-        private const decimal MaxDistinctionRate = 100.0M;
+        private const decimal OptionalUniqueness = 0.0M;
+        private const decimal MaxUniqueness = 100.0M;
 
         private int _length;
         private string _prefix;
         private string _postfix;
         private SymbolSet.Flags _sets;
-        private decimal _distinctionRate;
+        private decimal _uniqueness;
         private HashSet<char> _excludedAtStart;
         private HashSet<char> _excludedAtEnd;
 
@@ -37,9 +37,9 @@ namespace TokenGen.Generator
 
         internal SymbolSet.Flags SymbolFlags => _sets;
 
-        internal decimal DistinctionRate
+        internal decimal UniquenessRate
         {
-            get => _distinctionRate;
+            get => _uniqueness;
         }
 
         TokenOptions IOptions<TokenOptions>.Value
@@ -63,7 +63,7 @@ namespace TokenGen.Generator
         }
 
         /// <summary>
-        ///     Sets desirable length of a random token to generate
+        /// Sets length of a random token to generate
         /// </summary>
         public TokenOptions WithLength(int length)
         {
@@ -73,13 +73,13 @@ namespace TokenGen.Generator
 
         public TokenOptions WithMaximalDistinction()
         {
-            _distinctionRate = MaxDistinctionRate;
+            _uniqueness = MaxUniqueness;
             return this;
         }
 
         public TokenOptions WithOptionalDistinction()
         {
-            _distinctionRate = OptionalDistinctionRate;
+            _uniqueness = OptionalUniqueness;
             return this;
         }
 
@@ -137,7 +137,7 @@ namespace TokenGen.Generator
 
         public TokenOptions WithDistinctionRate(decimal rate)
         {
-            _distinctionRate = rate;
+            _uniqueness = rate;
             return this;
         }
 

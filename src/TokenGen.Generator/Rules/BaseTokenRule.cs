@@ -7,7 +7,7 @@
             Options = options;
         }
 
-        protected internal TokenOptions Options
+        protected TokenOptions Options
         {
             get;
         }

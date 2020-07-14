@@ -11,8 +11,7 @@ namespace TokenGen.Tests
         {
             var options = new TokenOptions()
                 .WithDigits()
-                .WithLowerLetters()
-                .WithLength(3)
+                .WithLength(2)
                 .WithDistinctionRate(100.0M);
 
             var token = TokenGenerator.Generate(options);

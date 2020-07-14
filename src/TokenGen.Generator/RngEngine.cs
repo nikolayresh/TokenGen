@@ -2,10 +2,13 @@
 
 namespace TokenGen.Generator
 {
+    /// <summary>
+    /// Engine used to generate random bytes
+    /// </summary>
     internal static class RngEngine
     {
         /// <summary>
-        ///     Generates random bytes of specified length
+        /// Generates random bytes of specified length
         /// </summary>
         internal static byte[] NextBytes(int length)
         {
