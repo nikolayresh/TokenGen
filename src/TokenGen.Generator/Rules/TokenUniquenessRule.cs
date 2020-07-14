@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace TokenGen.Generator.Rules
 {
+    /// <summary>
+    /// Rule that checks for uniqueness of token symbols 
+    /// </summary>
     internal class TokenUniquenessRule : BaseTokenRule
     {
         private readonly Dictionary<char, int> _frequencies;
@@ -19,7 +22,7 @@ namespace TokenGen.Generator.Rules
             // initial rate of uniqueness (100%)
             var uniqueness = 100.0M;
 
-            for (var i = 0; i < token.Length; i++)
+            for (var i = 0; i < Options.Length; i++)
             {
                 var current = token[i];
 
@@ -31,12 +34,11 @@ namespace TokenGen.Generator.Rules
                 _frequencies[current]++;
             }
 
-            _frequencies.Where(x => x.Value > 1)
-                .ToList().ForEach(
-                    x =>
-                    {
-                        uniqueness -= 100 * ((decimal) x.Value / Options.Length);
-                    });
+            _frequencies.Where(x => x.Value > 1).Select(x => x.Value)
+                .ToList().ForEach(frequency =>
+                {
+                    uniqueness -= 100 * ((decimal) frequency / Options.Length);
+                });
 
             return uniqueness >= Options.UniquenessRate;
         }

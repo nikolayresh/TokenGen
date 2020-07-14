@@ -7,7 +7,7 @@ namespace TokenGen.Generator
     {
         Prefix = 0x01,
 
-        Body = 0x02,
+        Payload = 0x02,
 
         Postfix = 0x04
     }

@@ -38,7 +38,7 @@ namespace TokenGen.Generator
                 tokenPayload = token.ToString();
             } while (rules.Count > 0 && !rules.TrueForAll(x => x.TryPass(tokenPayload)));
 
-            return new GeneratedToken(tokenPayload, options);
+            return new RandomToken(tokenPayload, options);
         }
 
         private static TokenOptions ValidateOptions(IOptions<TokenOptions> iOptions)
