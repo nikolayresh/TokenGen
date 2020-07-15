@@ -1,46 +1,37 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 
 namespace TokenGen.Generator.Rules
 {
     /// <summary>
-    /// Rule that checks for uniqueness of token symbols 
+    /// Rule that ensures uniqueness of token symbols 
     /// </summary>
     internal class TokenUniquenessRule : BaseTokenRule
     {
-        private readonly Dictionary<char, int> _frequencies;
-
         internal TokenUniquenessRule(TokenOptions options) : base(options)
         {
-            _frequencies = new Dictionary<char, int>();
         }
 
         public override bool TryPass(string token)
         {
-            _frequencies.Clear();
+            var chars = token.ToCharArray();
+            Array.Sort(chars);
 
-            // initial rate of uniqueness (100%)
-            var uniqueness = 100.0M;
+            var previous = (char) 0;
+            var unique = 0;
 
-            for (var i = 0; i < Options.Length; i++)
+            for (var i = 0; i < chars.Length; i++)
             {
-                var current = token[i];
+                var current = chars[i];
 
-                if (!_frequencies.ContainsKey(current))
+                if (current != previous)
                 {
-                    _frequencies[current] = 0;
+                    unique++;
                 }
 
-                _frequencies[current]++;
+                previous = current;
             }
 
-            _frequencies.Where(x => x.Value > 1).Select(x => x.Value)
-                .ToList().ForEach(frequency =>
-                {
-                    uniqueness -= 100 * ((decimal) frequency / Options.Length);
-                });
-
-            return uniqueness >= Options.UniquenessRate;
+            return unique >= Options.UniqueChars;
         }
     }
 }

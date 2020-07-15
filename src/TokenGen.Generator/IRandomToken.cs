@@ -13,7 +13,7 @@ namespace TokenGen.Generator
         string Value { get; }
 
         /// <summary>
-        ///     Gets prefix part of a generated token
+        /// Gets prefix part of a generated token
         /// </summary>
         string Prefix { get; }
 
@@ -28,7 +28,7 @@ namespace TokenGen.Generator
         string WithoutPrefix { get; }
 
         /// <summary>
-        ///     Gets value of a generated token without postfix part
+        /// Gets value of a generated token without postfix part
         /// </summary>
         string WithoutPostfix { get; }
 

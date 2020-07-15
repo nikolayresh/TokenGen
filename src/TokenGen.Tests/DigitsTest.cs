@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using TokenGen.Generator;
 
 namespace TokenGen.Tests
@@ -11,8 +12,8 @@ namespace TokenGen.Tests
         {
             var options = new TokenOptions()
                 .WithDigits()
-                .WithLength(8)
-                .WithDistinctionRate(100.0M);
+                .WithLength(6)
+                .WithUniqueChars(6);
 
             var token = TokenGenerator.Generate(options);
         }

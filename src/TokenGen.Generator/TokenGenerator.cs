@@ -7,12 +7,12 @@ using TokenGen.Generator.Rules;
 namespace TokenGen.Generator
 {
     /// <summary>
-    ///     Generator engine
+    /// Generator engine
     /// </summary>
     public static class TokenGenerator
     {
         /// <summary>
-        ///     Generates a new random token using specified options
+        /// Generates a new random token using specified options
         /// </summary>
         public static IRandomToken Generate(IOptions<TokenOptions> iOptions)
         {
@@ -20,7 +20,7 @@ namespace TokenGen.Generator
 
             var token = new StringBuilder();
             var rules = ResolveRules(options);
-            var symbols = SymbolSet.GetTokenSymbols(options.SymbolFlags);
+            var symbols = CharSet.GetTokenSymbols(options.SymbolFlags);
             string tokenPayload;
 
             do
@@ -36,6 +36,7 @@ namespace TokenGen.Generator
                 }
 
                 tokenPayload = token.ToString();
+
             } while (rules.Count > 0 && !rules.TrueForAll(x => x.TryPass(tokenPayload)));
 
             return new RandomToken(tokenPayload, options);
@@ -62,11 +63,11 @@ namespace TokenGen.Generator
                     nameof(iOptions.Value.Length));
             }
 
-            if (options.UniquenessRate < 0.0M || options.UniquenessRate > 100.0M)
+            if (options.UniqueChars != null && (options.UniqueChars < 0 || options.UniqueChars > options.Length))
             {
                 throw new ArgumentException(
-                    "Rate of token distinction must be defined on range [0,0 - 100,0]",
-                     nameof(iOptions.Value.UniquenessRate));
+                    $"Count of unique symbols must be defined on range [0 - {options.Length}]",
+                    nameof(iOptions.Value.UniqueChars));
             }
 
             return options;
@@ -76,7 +77,7 @@ namespace TokenGen.Generator
         {
             var rules = new List<ITokenRule>();
 
-            if (options.UniquenessRate > 0.0M)
+            if (options.UniqueChars != null)
             {
                 rules.Add(new TokenUniquenessRule(options));
             }

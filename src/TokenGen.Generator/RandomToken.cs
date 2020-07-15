@@ -6,11 +6,11 @@ namespace TokenGen.Generator
     internal sealed class RandomToken : IRandomToken
     {
         private readonly TokenOptions _options;
-        private readonly string _token;
+        private readonly string _payload;
 
-        public RandomToken(string token, TokenOptions options)
+        public RandomToken(string payload, TokenOptions options)
         {
-            _token = token;
+            _payload = payload;
             _options = options;
         }
 
@@ -58,7 +58,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return _options.SymbolFlags.HasFlag(SymbolSet.Flags.Digits)
+                return _options.SymbolFlags.HasFlag(CharSet.Flags.Digits)
                        && true;
             }
         }
@@ -94,7 +94,7 @@ namespace TokenGen.Generator
 
             if (parts.HasFlag(RandomTokenParts.Payload))
             {
-                sb.Append(_token);
+                sb.Append(_payload);
             }
 
             if (parts.HasFlag(RandomTokenParts.Postfix) && _options.Postfix != null)
@@ -102,7 +102,7 @@ namespace TokenGen.Generator
                 sb.Append(_options.Postfix);
             }
 
-            return sb.ToString();
+            return (sb.Length > 0) ? sb.ToString() : null;
         }
     }
 }

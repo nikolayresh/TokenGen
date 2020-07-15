@@ -6,14 +6,11 @@ namespace TokenGen.Generator
 {
     public sealed class TokenOptions : IOptions<TokenOptions>
     {
-        private const decimal OptionalUniqueness = 0.0M;
-        private const decimal MaxUniqueness = 100.0M;
-
         private int _length;
         private string _prefix;
         private string _postfix;
-        private SymbolSet.Flags _sets;
-        private decimal _uniqueness;
+        private CharSet.Flags _sets;
+        private int? _uniqueChars;
         private HashSet<char> _excludedAtStart;
         private HashSet<char> _excludedAtEnd;
 
@@ -35,12 +32,7 @@ namespace TokenGen.Generator
             get => _length;
         }
 
-        internal SymbolSet.Flags SymbolFlags => _sets;
-
-        internal decimal UniquenessRate
-        {
-            get => _uniqueness;
-        }
+        internal CharSet.Flags SymbolFlags => _sets;
 
         TokenOptions IOptions<TokenOptions>.Value
         {
@@ -71,15 +63,9 @@ namespace TokenGen.Generator
             return this;
         }
 
-        public TokenOptions WithMaximalDistinction()
+        public TokenOptions WithUniqueChars(int unique)
         {
-            _uniqueness = MaxUniqueness;
-            return this;
-        }
-
-        public TokenOptions WithOptionalDistinction()
-        {
-            _uniqueness = OptionalUniqueness;
+            _uniqueChars = unique;
             return this;
         }
 
@@ -88,19 +74,19 @@ namespace TokenGen.Generator
         /// </summary>
         public TokenOptions WithDigits()
         {
-            _sets |= SymbolSet.Flags.Digits;
+            _sets |= CharSet.Flags.Digits;
             return this;
         }
 
         public TokenOptions WithLowerLetters()
         {
-            _sets |= SymbolSet.Flags.LowerCaseLetters;
+            _sets |= CharSet.Flags.LowerCaseLetters;
             return this;
         }
 
         public TokenOptions WithUpperLetters()
         {
-            _sets |= SymbolSet.Flags.UpperCaseLetters;
+            _sets |= CharSet.Flags.UpperCaseLetters;
             return this;
         }
 
@@ -135,12 +121,6 @@ namespace TokenGen.Generator
             return this;
         }
 
-        public TokenOptions WithDistinctionRate(decimal rate)
-        {
-            _uniqueness = rate;
-            return this;
-        }
-
         internal HashSet<char> ExcludedAtStart
         {
             get => _excludedAtStart;
@@ -149,6 +129,11 @@ namespace TokenGen.Generator
         internal HashSet<char> ExcludedAtEnd
         {
             get => _excludedAtEnd;
+        }
+
+        internal int? UniqueChars
+        {
+            get => _uniqueChars;
         }
     }
 }

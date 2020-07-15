@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 
 namespace TokenGen.Generator
 {
-    public static class SymbolSet
+    public static class CharSet
     {
         [Flags]
         public enum Flags
@@ -16,6 +17,8 @@ namespace TokenGen.Generator
         public const string Digits = "0123456789";
         public const string LowerLetters = "abcdefghijklmnopqrstuvwxyz";
         public const string UpperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+
 
         public static int CalculateLength(Flags flags)
         {
@@ -40,19 +43,38 @@ namespace TokenGen.Generator
         }
 
         /// <summary>
-        ///     Builds a joined set of token symbols
+        /// Builds a joined set of token symbols
         /// </summary>
         public static string GetTokenSymbols(Flags flags)
         {
             var sb = new StringBuilder();
 
-            if (flags.HasFlag(Flags.Digits)) sb.Append(Digits);
+            if (flags.HasFlag(Flags.Digits))
+            {
+                sb.Append(Digits);
+            }
 
-            if (flags.HasFlag(Flags.LowerCaseLetters)) sb.Append(LowerLetters);
+            if (flags.HasFlag(Flags.LowerCaseLetters))
+            {
+                sb.Append(LowerLetters);
+            }
 
-            if (flags.HasFlag(Flags.UpperCaseLetters)) sb.Append(UpperLetters);
+            if (flags.HasFlag(Flags.UpperCaseLetters))
+            {
+                sb.Append(UpperLetters);
+            }
 
-            return sb.ToString();
+            return Shuffle(sb.ToString().ToCharArray());
+        }
+
+        private static string Shuffle(char[] chars)
+        {
+            var res = (
+                from ch in chars 
+                orderby Guid.NewGuid() 
+                select ch);
+
+            return string.Join(null, res);
         }
     }
 }
