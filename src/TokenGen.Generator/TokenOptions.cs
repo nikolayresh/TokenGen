@@ -14,34 +14,15 @@ namespace TokenGen.Generator
         private HashSet<char> _excludedAtStart;
         private HashSet<char> _excludedAtEnd;
 
-        internal string Prefix
-        {
-            get => _prefix;
-        }
-
-        internal string Postfix
-        {
-            get => _postfix;
-        }
-
         /// <summary>
-        ///     Gets length of a token to generate
+        /// Sets length of a random token to generate
         /// </summary>
-        internal int Length
+        public TokenOptions WithLength(int length)
         {
-            get => _length;
+            _length = length;
+            return this;
         }
 
-        internal CharSet.Flags SymbolFlags => _sets;
-
-        TokenOptions IOptions<TokenOptions>.Value
-        {
-            get
-            {
-                return this;
-            }
-        }
-        
         public TokenOptions WithPrefix(string prefix)
         {
             _prefix = prefix;
@@ -51,15 +32,6 @@ namespace TokenGen.Generator
         public TokenOptions WithPostfix(string postfix)
         {
             _postfix = postfix;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets length of a random token to generate
-        /// </summary>
-        public TokenOptions WithLength(int length)
-        {
-            _length = length;
             return this;
         }
 
@@ -134,6 +106,35 @@ namespace TokenGen.Generator
         internal int? UniqueChars
         {
             get => _uniqueChars;
+        }
+
+        internal string Prefix
+        {
+            get => _prefix;
+        }
+
+        internal string Postfix
+        {
+            get => _postfix;
+        }
+
+        /// <summary>
+        ///     Gets length of a token to generate
+        /// </summary>
+        internal int Length
+        {
+            get => _length;
+        }
+
+
+        internal CharSet.Flags SymbolFlags => _sets;
+
+        TokenOptions IOptions<TokenOptions>.Value
+        {
+            get
+            {
+                return this;
+            }
         }
     }
 }

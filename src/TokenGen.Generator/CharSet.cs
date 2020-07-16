@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace TokenGen.Generator
 {
-    public static class CharSet
+    internal static class CharSet
     {
         [Flags]
         public enum Flags
@@ -14,11 +14,9 @@ namespace TokenGen.Generator
             UpperCaseLetters = 0x04
         }
 
-        public const string Digits = "0123456789";
-        public const string LowerLetters = "abcdefghijklmnopqrstuvwxyz";
-        public const string UpperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-
+        internal static readonly char[] Digits = "0123456789".ToCharArray();
+        internal static readonly char[] LowerLetters = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
+        internal static readonly char[] UpperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
 
         public static int CalculateLength(Flags flags)
         {
@@ -45,36 +43,55 @@ namespace TokenGen.Generator
         /// <summary>
         /// Builds a joined set of token symbols
         /// </summary>
-        public static string GetTokenSymbols(Flags flags)
+        internal static string GetTokenSymbols(Flags flags)
         {
-            var sb = new StringBuilder();
+            var chars = new List<char>();
 
             if (flags.HasFlag(Flags.Digits))
             {
-                sb.Append(Digits);
+                chars.AddRange(Digits);
             }
 
             if (flags.HasFlag(Flags.LowerCaseLetters))
             {
-                sb.Append(LowerLetters);
+                chars.AddRange(LowerLetters);
             }
 
             if (flags.HasFlag(Flags.UpperCaseLetters))
             {
-                sb.Append(UpperLetters);
+                chars.AddRange(UpperLetters);
             }
 
-            return Shuffle(sb.ToString().ToCharArray());
+            return ShuffleChars(chars);
         }
 
-        private static string Shuffle(char[] chars)
+        /// <summary>
+        /// Returns a boolean value whether string contains any digits
+        /// </summary>
+        internal static bool ContainsDigits(string str)
         {
-            var res = (
-                from ch in chars 
-                orderby Guid.NewGuid() 
-                select ch);
+            var chars = new HashSet<char>(str);
+            return chars.Overlaps(Digits);
+        }
 
-            return string.Join(null, res);
+        internal static bool ContainsLowerLetters(string str)
+        {
+            var chars = new HashSet<char>(str);
+            return chars.Overlaps(LowerLetters);
+        }
+
+        internal static bool ContainsUpperLetters(string str)
+        {
+            var chars = new HashSet<char>(str);
+            return chars.Overlaps(UpperLetters);
+        }
+
+        private static string ShuffleChars(IEnumerable<char> chars)
+        {
+            return string.Join(null, 
+                from ch in chars
+                orderby Guid.NewGuid()
+                select ch);
         }
     }
 }

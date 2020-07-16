@@ -8,35 +8,54 @@ namespace TokenGen.Generator
     public interface IRandomToken
     {
         /// <summary>
-        /// Gets full value of a generated token
+        /// Returns full/complete value of a generated token
         /// </summary>
         string Value { get; }
 
         /// <summary>
-        /// Gets prefix part of a generated token
+        /// Returns payload part of a generated token
+        /// </summary>
+        string Payload { get; }
+
+        /// <summary>
+        /// Returns prefix part of a generated token
         /// </summary>
         string Prefix { get; }
 
         /// <summary>
-        ///     Gets postfix part of a generated token
+        /// Returns postfix part of a generated token
         /// </summary>
         string Postfix { get; }
 
         /// <summary>
-        ///     Gets value of a generated token without prefix part
+        /// Returns value of a generated token without prefix part
         /// </summary>
         string WithoutPrefix { get; }
 
         /// <summary>
-        /// Gets value of a generated token without postfix part
+        /// Returns value of a generated token without postfix part
         /// </summary>
         string WithoutPostfix { get; }
 
         /// <summary>
-        /// Returns a boolean value whether token contains any digit symbol
+        /// Returns a boolean value whether token contains at least a single digit
         /// </summary>
         bool HasDigits { get; }
 
+        /// <summary>
+        /// Returns a boolean value whether a generated token contains any lower-case letter
+        /// </summary>
+        bool HasLowerCaseLetters { get; }
+
+        /// <summary>
+        /// Returns a boolean value whether a generated token contains any upper-case letter
+        /// </summary>
+        bool HasUpperCaseLetters { get; }
+
+        /// <summary>
+        /// Copies 
+        /// </summary>
+        /// <param name="sb"></param>
         void CopyTo(StringBuilder sb);
 
         void CopyTo(StringBuilder sb, RandomTokenParts parts);

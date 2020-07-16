@@ -22,6 +22,14 @@ namespace TokenGen.Generator
             }
         }
 
+        public string Payload
+        {
+            get
+            {
+                return Construct(RandomTokenParts.Payload);
+            }
+        }
+
         public string Prefix
         {
             get
@@ -59,7 +67,25 @@ namespace TokenGen.Generator
             get
             {
                 return _options.SymbolFlags.HasFlag(CharSet.Flags.Digits)
-                       && true;
+                       && CharSet.ContainsDigits(Value);
+            }
+        }
+
+        public bool HasLowerCaseLetters
+        {
+            get
+            {
+                return _options.SymbolFlags.HasFlag(CharSet.Flags.LowerCaseLetters)
+                       && CharSet.ContainsLowerLetters(Value);
+            }
+        }
+
+        public bool HasUpperCaseLetters
+        {
+            get
+            {
+                return _options.SymbolFlags.HasFlag(CharSet.Flags.UpperCaseLetters)
+                       && CharSet.ContainsUpperLetters(Value);
             }
         }
 
