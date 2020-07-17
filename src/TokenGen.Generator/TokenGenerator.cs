@@ -26,7 +26,7 @@ namespace TokenGen.Generator
             do
             {
                 token.Clear();
-                var bytes = RngEngine.NextBytes(options.Length * sizeof(int));
+                var bytes = Randomizer.NextBytes(options.Length * sizeof(int));
 
                 for (var i = 0; i < bytes.Length; i += sizeof(int))
                 {

@@ -1,16 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 
 namespace TokenGen.Generator
 {
-    /// <summary>
-    /// Engine used to generate random bytes
-    /// </summary>
-    internal static class RngEngine
+    internal static class Randomizer
     {
-        /// <summary>
-        /// Generates random bytes of specified length
-        /// </summary>
         internal static byte[] NextBytes(int length)
         {
             var result = new byte[length];
@@ -21,6 +17,14 @@ namespace TokenGen.Generator
             }
 
             return result;
+        }
+
+        internal static IEnumerable<T> Shuffle<T>(this IEnumerable<T> collection)
+        {
+            return 
+                (from item in collection
+                 orderby Guid.NewGuid()
+                 select item);
         }
     }
 }

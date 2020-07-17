@@ -53,9 +53,8 @@ namespace TokenGen.Generator
         bool HasUpperCaseLetters { get; }
 
         /// <summary>
-        /// Copies 
+        /// Appends full/complete content of generated token to a specified string builder 
         /// </summary>
-        /// <param name="sb"></param>
         void CopyTo(StringBuilder sb);
 
         void CopyTo(StringBuilder sb, RandomTokenParts parts);

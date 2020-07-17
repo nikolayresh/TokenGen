@@ -1,12 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using NUnit.Framework;
-using TokenGen.Generator;
+﻿using NUnit.Framework;
 
 namespace TokenGen.Tests
 {
     [TestFixture]
-    public class DigitsTest
+    public class DigitGeneratorTests
     {
         [Test]
         public void Test()

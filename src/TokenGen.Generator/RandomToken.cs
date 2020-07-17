@@ -66,8 +66,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return _options.SymbolFlags.HasFlag(CharSet.Flags.Digits)
-                       && CharSet.ContainsDigits(Value);
+                return CharSet.ContainsDigits(Value);
             }
         }
 
@@ -75,8 +74,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return _options.SymbolFlags.HasFlag(CharSet.Flags.LowerCaseLetters)
-                       && CharSet.ContainsLowerLetters(Value);
+                return CharSet.ContainsLowerLetters(Value);
             }
         }
 
@@ -84,8 +82,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return _options.SymbolFlags.HasFlag(CharSet.Flags.UpperCaseLetters)
-                       && CharSet.ContainsUpperLetters(Value);
+                return CharSet.ContainsUpperLetters(Value);
             }
         }
 

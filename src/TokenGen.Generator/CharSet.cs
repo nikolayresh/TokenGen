@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace TokenGen.Generator
 {
@@ -62,7 +61,7 @@ namespace TokenGen.Generator
                 chars.AddRange(UpperLetters);
             }
 
-            return ShuffleChars(chars);
+            return string.Join(null, Randomizer.Shuffle(chars));
         }
 
         /// <summary>
@@ -84,14 +83,6 @@ namespace TokenGen.Generator
         {
             var chars = new HashSet<char>(str);
             return chars.Overlaps(UpperLetters);
-        }
-
-        private static string ShuffleChars(IEnumerable<char> chars)
-        {
-            return string.Join(null, 
-                from ch in chars
-                orderby Guid.NewGuid()
-                select ch);
         }
     }
 }
