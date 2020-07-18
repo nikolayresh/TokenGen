@@ -8,26 +8,22 @@ namespace TokenGen.Generator
     internal static class Randomizer
     {
         /// <summary>
-        /// Selects a random character from specified string
+        /// Generates a random non-negative integer
         /// </summary>
-        internal static char SelectRandomChar(string str)
+        internal static int NextInt()
         {
             var bytes = NextBytes(sizeof(int));
             var randomInt = BitConverter.ToInt32(bytes, 0) & 0x7FFFFFFF;
 
-            return str[randomInt % str.Length];
+            return randomInt;
         }
 
-        private static byte[] NextBytes(int length)
+        /// <summary>
+        /// Selects a random item from specified array
+        /// </summary>
+        internal static T SelectRandomItem<T>(T[] arr)
         {
-            var result = new byte[length];
-
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                rng.GetBytes(result);
-            }
-
-            return result;
+            return arr[NextInt() % arr.Length];
         }
 
         internal static IEnumerable<T> Shuffle<T>(IEnumerable<T> collection)
@@ -41,6 +37,18 @@ namespace TokenGen.Generator
         internal static string Shuffle(string str)
         {
             return string.Join(null, Shuffle((IEnumerable<char>) str));
+        }
+
+        private static byte[] NextBytes(int length)
+        {
+            var result = new byte[length];
+
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                rng.GetBytes(result);
+            }
+
+            return result;
         }
     }
 }

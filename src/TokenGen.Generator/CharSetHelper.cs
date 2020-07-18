@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace TokenGen.Generator
 {
@@ -11,23 +12,23 @@ namespace TokenGen.Generator
         /// <summary>
         /// Builds a joined map of token symbols
         /// </summary>
-        internal static Dictionary<CharSetOptions, string> BuildMap(CharSetOptions sets)
+        internal static Dictionary<CharSetOptions, char[]> BuildCharsMap(CharSetOptions sets)
         {
-            var map = new Dictionary<CharSetOptions, string>();
+            var map = new Dictionary<CharSetOptions, char[]>();
 
             if ((sets & CharSetOptions.Digits) != 0)
             {
-                map[CharSetOptions.Digits] = string.Join(null, Digits);
+                map[CharSetOptions.Digits] = Randomizer.Shuffle(Digits).ToArray();
             }
 
             if ((sets & CharSetOptions.LowerCaseLetters) != 0)
             {
-                map[CharSetOptions.LowerCaseLetters] = string.Join(null, LowerLetters);
+                map[CharSetOptions.LowerCaseLetters] = Randomizer.Shuffle(LowerLetters).ToArray();
             }
 
             if ((sets & CharSetOptions.UpperCaseLetters) != 0)
             {
-                map[CharSetOptions.UpperCaseLetters] = string.Join(null, UpperLetters);
+                map[CharSetOptions.UpperCaseLetters] = Randomizer.Shuffle(UpperLetters).ToArray();
             }
 
             return map;

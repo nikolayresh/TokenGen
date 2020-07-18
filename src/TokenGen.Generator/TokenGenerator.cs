@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Options;
@@ -19,27 +20,27 @@ namespace TokenGen.Generator
         {
             var options = ValidateOptions(iOptions);
 
+            string tokenPayload;
             var token = new StringBuilder();
             var rules = ResolveRules(options);
-            var charsMap = CharSetHelper.BuildMap(options.CharSets);
-            string tokenPayload;
+            var setsList = CharSetHelper.BuildCharsMap(options.CharSets)
+                .Select((entry, index) => new
+                {
+                    Index = index,
+                    Chars = entry.Value
+                }).ToImmutableList();
 
             do
             {
                 token.Clear();
-                var sets = charsMap.Select(
-                    (entry, index) => new
-                    {
-                        Index = index,
-                        Chars = entry.Value
-                    }).ToList();
-
-                var setIndex = 0;
 
                 for (var i = 0; i < options.Length; i++)
                 {
-                    var chars = sets[setIndex++ % sets.Count].Chars;
-                    token.Append(Randomizer.SelectRandomChar(chars));
+                    var chars = (i < setsList.Count)
+                        ? setsList[i].Chars 
+                        : setsList[Randomizer.NextInt() % setsList.Count].Chars;
+
+                    token.Append(Randomizer.SelectRandomItem(chars));
                 }
                 
                 tokenPayload = Randomizer.Shuffle(token.ToString());
