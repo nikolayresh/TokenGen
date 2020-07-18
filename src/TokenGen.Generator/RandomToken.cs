@@ -5,10 +5,10 @@ namespace TokenGen.Generator
 {
     internal sealed class RandomToken : IRandomToken
     {
-        private readonly TokenOptions _options;
         private readonly string _payload;
-
-        public RandomToken(string payload, TokenOptions options)
+        private readonly TokenOptions _options;
+        
+        internal RandomToken(string payload, TokenOptions options)
         {
             _payload = payload;
             _options = options;
@@ -66,7 +66,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return CharSet.ContainsDigits(Value);
+                return CharSetHelper.ContainsDigits(Value);
             }
         }
 
@@ -74,7 +74,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return CharSet.ContainsLowerLetters(Value);
+                return CharSetHelper.ContainsLowerLetters(Value);
             }
         }
 
@@ -82,7 +82,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return CharSet.ContainsUpperLetters(Value);
+                return CharSetHelper.ContainsUpperLetters(Value);
             }
         }
 

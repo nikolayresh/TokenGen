@@ -1,62 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace TokenGen.Generator
 {
-    internal static class CharSet
+    internal static class CharSetHelper
     {
-        [Flags]
-        public enum Flags
-        {
-            Digits = 0x01,
-            LowerCaseLetters = 0x02,
-            UpperCaseLetters = 0x04
-        }
-
         internal static readonly char[] Digits = "0123456789".ToCharArray();
         internal static readonly char[] LowerLetters = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
         internal static readonly char[] UpperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
 
-        public static int CalculateLength(Flags flags)
-        {
-            var length = 0;
-
-            if (flags.HasFlag(Flags.Digits))
-            {
-                length += Digits.Length;
-            }
-
-            if (flags.HasFlag(Flags.LowerCaseLetters))
-            {
-                length += LowerLetters.Length;
-            }
-
-            if (flags.HasFlag(Flags.UpperCaseLetters))
-            {
-                length += UpperLetters.Length;
-            }
-
-            return length;
-        }
-
         /// <summary>
         /// Builds a joined set of token symbols
         /// </summary>
-        internal static string GetTokenSymbols(Flags flags)
+        internal static string GetTokenChars(CharSetOptions sets)
         {
             var chars = new List<char>();
 
-            if (flags.HasFlag(Flags.Digits))
+            if ((sets & CharSetOptions.Digits) != 0)
             {
                 chars.AddRange(Digits);
             }
 
-            if (flags.HasFlag(Flags.LowerCaseLetters))
+            if ((sets & CharSetOptions.LowerCaseLetters) != 0)
             {
                 chars.AddRange(LowerLetters);
             }
 
-            if (flags.HasFlag(Flags.UpperCaseLetters))
+            if ((sets & CharSetOptions.UpperCaseLetters) != 0)
             {
                 chars.AddRange(UpperLetters);
             }

@@ -9,7 +9,7 @@ namespace TokenGen.Generator
         private int _length;
         private string _prefix;
         private string _postfix;
-        private CharSet.Flags _sets;
+        private CharSetOptions _charSets;
         private int? _uniqueChars;
         private HashSet<char> _excludedAtStart;
         private HashSet<char> _excludedAtEnd;
@@ -46,19 +46,19 @@ namespace TokenGen.Generator
         /// </summary>
         public TokenOptions WithDigits()
         {
-            _sets |= CharSet.Flags.Digits;
+            _charSets |= CharSetOptions.Digits;
             return this;
         }
 
         public TokenOptions WithLowerLetters()
         {
-            _sets |= CharSet.Flags.LowerCaseLetters;
+            _charSets |= CharSetOptions.LowerCaseLetters;
             return this;
         }
 
         public TokenOptions WithUpperLetters()
         {
-            _sets |= CharSet.Flags.UpperCaseLetters;
+            _charSets |= CharSetOptions.UpperCaseLetters;
             return this;
         }
 
@@ -127,7 +127,10 @@ namespace TokenGen.Generator
         }
 
 
-        internal CharSet.Flags SymbolFlags => _sets;
+        internal CharSetOptions CharSets
+        {
+            get => _charSets;
+        }
 
         TokenOptions IOptions<TokenOptions>.Value
         {

@@ -7,7 +7,23 @@ namespace TokenGen.Generator
 {
     internal static class Randomizer
     {
-        internal static byte[] NextBytes(int length)
+        /// <summary>
+        /// Generates list of random non-negative integers
+        /// </summary>
+        internal static List<int> NextIntegers(int length)
+        {
+            var result = new List<int>(length);
+            var bytes = NextBytes(length * sizeof(int));
+
+            for (var i = 0; i < bytes.Length; i += sizeof(int))
+            {
+                result.Add(BitConverter.ToInt32(bytes, i) & 0x7FFFFFFF);
+            }
+
+            return result;
+        }
+
+        private static byte[] NextBytes(int length)
         {
             var result = new byte[length];
 

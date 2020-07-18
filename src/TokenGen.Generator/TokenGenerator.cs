@@ -20,23 +20,17 @@ namespace TokenGen.Generator
 
             var token = new StringBuilder();
             var rules = ResolveRules(options);
-            var symbols = CharSet.GetTokenSymbols(options.SymbolFlags);
+            var chars = CharSetHelper.GetTokenChars(options.CharSets);
             string tokenPayload;
 
             do
             {
                 token.Clear();
-                var bytes = Randomizer.NextBytes(options.Length * sizeof(int));
-
-                for (var i = 0; i < bytes.Length; i += sizeof(int))
-                {
-                    var number = BitConverter.ToInt32(bytes, i) & 0x7FFFFFFF;
-
-                    token.Append(symbols[number % symbols.Length]);
-                }
+                Randomizer.NextIntegers(options.Length)
+                    .ForEach(
+                        number => token.Append(chars[number % chars.Length]));
 
                 tokenPayload = token.ToString();
-
             } while (rules.Count > 0 && !rules.TrueForAll(x => x.TryPass(tokenPayload)));
 
             return new RandomToken(tokenPayload, options);
