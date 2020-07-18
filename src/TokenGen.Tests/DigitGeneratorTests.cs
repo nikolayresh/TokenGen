@@ -12,7 +12,7 @@ namespace TokenGen.Tests
             var options = new TokenOptions()
                 .WithDigits()
                 .WithUpperLetters()
-                .WithLength(10);
+                .WithLength(15);
 
             var token = TokenGenerator.Generate(options);
         }

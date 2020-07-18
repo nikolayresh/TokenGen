@@ -8,19 +8,14 @@ namespace TokenGen.Generator
     internal static class Randomizer
     {
         /// <summary>
-        /// Generates list of random non-negative integers
+        /// Selects a random character from specified string
         /// </summary>
-        internal static List<int> NextIntegers(int length)
+        internal static char SelectRandomChar(string str)
         {
-            var result = new List<int>(length);
-            var bytes = NextBytes(length * sizeof(int));
+            var bytes = NextBytes(sizeof(int));
+            var randomInt = BitConverter.ToInt32(bytes, 0) & 0x7FFFFFFF;
 
-            for (var i = 0; i < bytes.Length; i += sizeof(int))
-            {
-                result.Add(BitConverter.ToInt32(bytes, i) & 0x7FFFFFFF);
-            }
-
-            return result;
+            return str[randomInt % str.Length];
         }
 
         private static byte[] NextBytes(int length)
@@ -35,12 +30,17 @@ namespace TokenGen.Generator
             return result;
         }
 
-        internal static IEnumerable<T> Shuffle<T>(this IEnumerable<T> collection)
+        internal static IEnumerable<T> Shuffle<T>(IEnumerable<T> collection)
         {
             return 
                 (from item in collection
                  orderby Guid.NewGuid()
                  select item);
+        }
+
+        internal static string Shuffle(string str)
+        {
+            return string.Join(null, Shuffle((IEnumerable<char>) str));
         }
     }
 }

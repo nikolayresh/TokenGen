@@ -9,46 +9,68 @@ namespace TokenGen.Generator
         internal static readonly char[] UpperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
 
         /// <summary>
-        /// Builds a joined set of token symbols
+        /// Builds a joined map of token symbols
         /// </summary>
-        internal static string GetTokenChars(CharSetOptions sets)
+        internal static Dictionary<CharSetOptions, string> BuildMap(CharSetOptions sets)
         {
-            var chars = new List<char>();
+            var map = new Dictionary<CharSetOptions, string>();
 
             if ((sets & CharSetOptions.Digits) != 0)
             {
-                chars.AddRange(Digits);
+                map[CharSetOptions.Digits] = string.Join(null, Digits);
             }
 
             if ((sets & CharSetOptions.LowerCaseLetters) != 0)
             {
-                chars.AddRange(LowerLetters);
+                map[CharSetOptions.LowerCaseLetters] = string.Join(null, LowerLetters);
             }
 
             if ((sets & CharSetOptions.UpperCaseLetters) != 0)
             {
-                chars.AddRange(UpperLetters);
+                map[CharSetOptions.UpperCaseLetters] = string.Join(null, UpperLetters);
             }
 
-            return string.Join(null, Randomizer.Shuffle(chars));
+            return map;
+        }
+
+        internal static int GetFlagsCount(CharSetOptions sets)
+        {
+            var count = 0;
+
+            if ((sets & CharSetOptions.Digits) != 0)
+            {
+                count++;
+            }
+
+            if ((sets & CharSetOptions.LowerCaseLetters) != 0)
+            {
+                count++;
+            }
+
+            if ((sets & CharSetOptions.UpperCaseLetters) != 0)
+            {
+                count++;
+            }
+
+            return count;
         }
 
         /// <summary>
         /// Returns a boolean value whether string contains any digits
         /// </summary>
-        internal static bool ContainsDigits(string str)
+        internal static bool ContainsAnyDigit(string str)
         {
             var chars = new HashSet<char>(str);
             return chars.Overlaps(Digits);
         }
 
-        internal static bool ContainsLowerLetters(string str)
+        internal static bool ContainsAnyLowerLetter(string str)
         {
             var chars = new HashSet<char>(str);
             return chars.Overlaps(LowerLetters);
         }
 
-        internal static bool ContainsUpperLetters(string str)
+        internal static bool ContainsAnyUpperLetter(string str)
         {
             var chars = new HashSet<char>(str);
             return chars.Overlaps(UpperLetters);

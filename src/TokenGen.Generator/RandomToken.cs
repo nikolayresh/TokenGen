@@ -66,7 +66,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return CharSetHelper.ContainsDigits(Value);
+                return CharSetHelper.ContainsAnyDigit(Value);
             }
         }
 
@@ -74,7 +74,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return CharSetHelper.ContainsLowerLetters(Value);
+                return CharSetHelper.ContainsAnyLowerLetter(Value);
             }
         }
 
@@ -82,7 +82,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return CharSetHelper.ContainsUpperLetters(Value);
+                return CharSetHelper.ContainsAnyUpperLetter(Value);
             }
         }
 
@@ -110,17 +110,17 @@ namespace TokenGen.Generator
         {
             sb ??= new StringBuilder();
 
-            if (parts.HasFlag(RandomTokenParts.Prefix) && _options.Prefix != null)
+            if ((parts & RandomTokenParts.Prefix) != 0 && _options.Prefix != null)
             {
                 sb.Append(_options.Prefix);
             }
 
-            if (parts.HasFlag(RandomTokenParts.Payload))
+            if ((parts & RandomTokenParts.Payload) != 0)
             {
                 sb.Append(_payload);
             }
 
-            if (parts.HasFlag(RandomTokenParts.Postfix) && _options.Postfix != null)
+            if ((parts & RandomTokenParts.Postfix) != 0 && _options.Postfix != null)
             {
                 sb.Append(_options.Postfix);
             }

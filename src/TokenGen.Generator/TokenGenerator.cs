@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Options;
 using TokenGen.Generator.Rules;
@@ -20,17 +21,28 @@ namespace TokenGen.Generator
 
             var token = new StringBuilder();
             var rules = ResolveRules(options);
-            var chars = CharSetHelper.GetTokenChars(options.CharSets);
+            var charsMap = CharSetHelper.BuildMap(options.CharSets);
             string tokenPayload;
 
             do
             {
                 token.Clear();
-                Randomizer.NextIntegers(options.Length)
-                    .ForEach(
-                        number => token.Append(chars[number % chars.Length]));
+                var sets = charsMap.Select(
+                    (entry, index) => new
+                    {
+                        Index = index,
+                        Chars = entry.Value
+                    }).ToList();
 
-                tokenPayload = token.ToString();
+                var setIndex = 0;
+
+                for (var i = 0; i < options.Length; i++)
+                {
+                    var chars = sets[setIndex++ % sets.Count].Chars;
+                    token.Append(Randomizer.SelectRandomChar(chars));
+                }
+                
+                tokenPayload = Randomizer.Shuffle(token.ToString());
             } while (rules.Count > 0 && !rules.TrueForAll(x => x.TryPass(tokenPayload)));
 
             return new RandomToken(tokenPayload, options);
