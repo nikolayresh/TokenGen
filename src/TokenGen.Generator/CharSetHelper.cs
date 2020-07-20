@@ -1,37 +1,37 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Immutable;
 
 namespace TokenGen.Generator
 {
     internal static class CharSetHelper
     {
-        internal static readonly char[] Digits = "0123456789".ToCharArray();
-        internal static readonly char[] LowerLetters = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
-        internal static readonly char[] UpperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+        private static readonly char[] Digits = "0123456789".ToCharArray();
+        private static readonly char[] LowerLetters = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
+        private static readonly char[] UpperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
 
         /// <summary>
-        /// Builds a joined map of token symbols
+        /// Builds a joined read-only list of char sets specified by options
         /// </summary>
-        internal static Dictionary<CharSetOptions, char[]> BuildCharsMap(CharSetOptions sets)
+        internal static ImmutableList<char[]> BuildCharSetsList(CharSetOptions sets)
         {
-            var map = new Dictionary<CharSetOptions, char[]>();
+            var charSets = new List<char[]>();
 
             if ((sets & CharSetOptions.Digits) != 0)
             {
-                map[CharSetOptions.Digits] = Randomizer.Shuffle(Digits).ToArray();
+                charSets.Add(Digits);
             }
 
             if ((sets & CharSetOptions.LowerCaseLetters) != 0)
             {
-                map[CharSetOptions.LowerCaseLetters] = Randomizer.Shuffle(LowerLetters).ToArray();
+                charSets.Add(LowerLetters);
             }
 
             if ((sets & CharSetOptions.UpperCaseLetters) != 0)
             {
-                map[CharSetOptions.UpperCaseLetters] = Randomizer.Shuffle(UpperLetters).ToArray();
+                charSets.Add(UpperLetters);
             }
 
-            return map;
+            return charSets.ToImmutableList();
         }
 
         internal static int GetFlagsCount(CharSetOptions sets)

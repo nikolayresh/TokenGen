@@ -7,6 +7,25 @@ namespace TokenGen.Generator
 {
     internal static class Randomizer
     {
+        internal static int[] NextIntegers(int length)
+        {
+            var result = new int[length];
+            var bytes = new byte[length * sizeof(int)];
+
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                rng.GetBytes(bytes);
+            }
+
+            for (var i = 0; i < bytes.Length; i += sizeof(int))
+            {
+                int randomInt = BitConverter.ToInt32(bytes, i) & 0x7FFFFFFF;
+                result[i / sizeof(int)] = randomInt;
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Generates a random non-negative integer
         /// </summary>
@@ -17,7 +36,7 @@ namespace TokenGen.Generator
 
             return randomInt;
         }
-
+        
         /// <summary>
         /// Selects a random item from specified array
         /// </summary>
