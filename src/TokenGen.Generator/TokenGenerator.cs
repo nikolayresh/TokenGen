@@ -30,13 +30,7 @@ namespace TokenGen.Generator
                 token.Clear();
 
                 AppendConsecutiveRange(token, charSets);
-
-                var tuples = Randomizer.NextTuples(options.TokenLength - charSets.Count);
-                if (tuples.Length > 0)
-                {
-                    AppendNonConsecutiveRange(token, tuples, charSets);
-                }
-
+                AppendNonConsecutiveRange(token, charSets, options.TokenLength - charSets.Count);
                 tokenPayload = Randomizer.Shuffle(token.ToString());
 
             } while (rules.Count > 0 && !rules.TrueForAll(x => x.TryPass(tokenPayload)));
@@ -44,8 +38,10 @@ namespace TokenGen.Generator
             return new RandomToken(tokenPayload, options);
         }
 
-        private static void AppendNonConsecutiveRange(StringBuilder token, Tuple<int, int>[] tuples, ImmutableList<char[]> charSets)
+        private static void AppendNonConsecutiveRange(StringBuilder token, ImmutableList<char[]> charSets, int length)
         {
+            var tuples = Randomizer.NextTuples(length);
+
             for (var i = 0; i < tuples.Length; i++)
             {
                 var (SetNumber, CharNumber) = tuples[i];
