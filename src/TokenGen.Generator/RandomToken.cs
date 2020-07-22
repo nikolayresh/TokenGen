@@ -66,7 +66,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return CharSetHelper.ContainsAnyDigit(Value);
+                return CharSetManager.ContainsAnyDigit(Value);
             }
         }
 
@@ -74,7 +74,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return CharSetHelper.ContainsAnyLowerLetter(Value);
+                return CharSetManager.ContainsAnyLowerLetter(Value);
             }
         }
 
@@ -82,7 +82,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return CharSetHelper.ContainsAnyUpperLetter(Value);
+                return CharSetManager.ContainsAnyUpperLetter(Value);
             }
         }
 

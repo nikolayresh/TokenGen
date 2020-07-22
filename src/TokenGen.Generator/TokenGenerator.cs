@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text;
 using Microsoft.Extensions.Options;
 using TokenGen.Generator.Rules;
@@ -22,27 +23,46 @@ namespace TokenGen.Generator
 
             var token = new StringBuilder();
             var rules = ResolveRules(options);
-            var charSets = CharSetHelper.BuildCharSetsList(options.CharSets);
+            var charSets = CharSetManager.BuildCharSetsList(options.CharSets);
 
             do
             {
                 token.Clear();
-                var randomNumbers = Randomizer.NextIntegers(options.Length - charSets.Count);
 
-                for (var i = 0; i < options.Length; i++)
+                AppendConsecutiveRange(token, charSets);
+
+                var tuples = Randomizer.NextTuples(options.TokenLength - charSets.Count);
+                if (tuples.Length > 0)
                 {
-                    var chars = (i < charSets.Count)
-                        ? charSets[i]
-                        : charSets[randomNumbers[i - charSets.Count] % charSets.Count];
-
-                    token.Append(Randomizer.SelectRandomItem(chars));
+                    AppendNonConsecutiveRange(token, tuples, charSets);
                 }
-                
+
                 tokenPayload = Randomizer.Shuffle(token.ToString());
 
             } while (rules.Count > 0 && !rules.TrueForAll(x => x.TryPass(tokenPayload)));
 
             return new RandomToken(tokenPayload, options);
+        }
+
+        private static void AppendNonConsecutiveRange(StringBuilder token, Tuple<int, int>[] tuples, ImmutableList<char[]> charSets)
+        {
+            for (var i = 0; i < tuples.Length; i++)
+            {
+                var (SetNumber, CharNumber) = tuples[i];
+                var randomSet = charSets[SetNumber % charSets.Count];
+                var randomChar = randomSet[CharNumber % randomSet.Length];
+
+                token.Append(randomChar);
+            }
+        }
+
+        private static void AppendConsecutiveRange(StringBuilder token, ImmutableList<char[]> charSets)
+        {
+            for (var i = 0; i < charSets.Count; i++)
+            {
+                var set = charSets[i];
+                token.Append(Randomizer.SelectRandomItem(set));
+            }
         }
 
         private static TokenOptions ValidateOptions(IOptions<TokenOptions> iOptions)
@@ -59,18 +79,18 @@ namespace TokenGen.Generator
                 throw new ArgumentNullException(nameof(iOptions.Value));
             }
 
-            if (options.Length <= 0)
+            if (options.TokenLength <= 0)
             {
                 throw new ArgumentException(
-                    "Length of token must be a positive integer",
-                    nameof(iOptions.Value.Length));
+                    "Length of token must be a positive integer", 
+                    nameof(iOptions.Value.TokenLength));
             }
 
-            if (options.UniqueChars != null && (options.UniqueChars < 0 || options.UniqueChars > options.Length))
+            if (options.TokenLength < CharSetManager.GetSetsCount(options.CharSets))
             {
                 throw new ArgumentException(
-                    $"Count of unique symbols must be defined on range [0 - {options.Length}]",
-                    nameof(iOptions.Value.UniqueChars));
+                    "Length of token must be greater or equal to count of character sets",
+                    nameof(iOptions.Value.TokenLength));
             }
 
             return options;

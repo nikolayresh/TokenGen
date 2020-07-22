@@ -119,13 +119,12 @@ namespace TokenGen.Generator
         }
 
         /// <summary>
-        ///     Gets length of a token to generate
+        /// Returns a user-specified length of token to generate
         /// </summary>
-        internal int Length
+        internal int TokenLength
         {
             get => _length;
         }
-
 
         internal CharSetOptions CharSets
         {

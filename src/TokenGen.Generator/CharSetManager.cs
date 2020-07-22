@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace TokenGen.Generator
 {
-    internal static class CharSetHelper
+    internal static class CharSetManager
     {
         private static readonly char[] Digits = "0123456789".ToCharArray();
         private static readonly char[] LowerLetters = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
@@ -34,7 +35,7 @@ namespace TokenGen.Generator
             return charSets.ToImmutableList();
         }
 
-        internal static int GetFlagsCount(CharSetOptions sets)
+        internal static int GetSetsCount(CharSetOptions sets)
         {
             var count = 0;
 
