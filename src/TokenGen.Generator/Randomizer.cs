@@ -15,8 +15,8 @@ namespace TokenGen.Generator
         internal static Tuple<int,int>[] NextTuples(int length)
         {
             var tuples = new Tuple<int,int>[length];
-            var leftList = new List<int>(length);
-            var rightList = new List<int>(length);
+            var leftList = new List<int>(length / 2);
+            var rightList = new List<int>(length / 2);
 
             var bytes = NextBytes(2 * length * sizeof(int));
             var i = 0;
@@ -36,6 +36,9 @@ namespace TokenGen.Generator
             return tuples;
         }
 
+        /// <summary>
+        /// Generates an array of random non-negative integers of specified length
+        /// </summary>
         internal static int[] NextIntegers(int length)
         {
             var result = new int[length];

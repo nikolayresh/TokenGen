@@ -45,7 +45,7 @@ namespace TokenGen.Generator
             for (var i = 0; i < charSets.Count; i++)
             {
                 var set = charSets[i];
-                token.Append(set[charSelectors[i] % set.Length]);
+                token.Append( set[charSelectors[i] % set.Length] );
             }
         }
 
