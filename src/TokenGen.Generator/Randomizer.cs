@@ -9,21 +9,14 @@ namespace TokenGen.Generator
 {
     internal static class Randomizer
     {
-        private static readonly Tuple<int, int>[] EmptyTuples = {};
-
         /// <summary>
         /// Generates an array of two-item tuples filled with random non-negative integers 
         /// </summary>
         internal static Tuple<int,int>[] NextTuples(int length)
         {
-            if (length == 0)
-            {
-                return EmptyTuples;
-            }
-
             var tuples = new Tuple<int,int>[length];
-            var listOne = new List<int>(length);
-            var listTwo = new List<int>(length);
+            var leftList = new List<int>(length);
+            var rightList = new List<int>(length);
 
             var bytes = NextBytes(2 * length * sizeof(int));
             var i = 0;
@@ -31,21 +24,30 @@ namespace TokenGen.Generator
             for (; i < bytes.Length; i += sizeof(int))
             { 
                 var randomInt = BitConverter.ToInt32(bytes, i) & 0x7FFFFFFF;
-                var list = (i < bytes.Length / 2) ? listOne : listTwo;
+                var list = (i < bytes.Length / 2) ? leftList : rightList;
                 list.Add(randomInt);
             }
 
             for (i = 0; i < length; i++)
             {
-                tuples[i] = new Tuple<int, int>(listOne[i], listTwo[i]);
+                tuples[i] = new Tuple<int, int>(leftList[i], rightList[i]);
             }
 
             return tuples;
         }
 
-        internal static T SelectRandomItem<T>(T[] items)
+        internal static int[] NextIntegers(int length)
         {
-            return items[NextInt() % items.Length];
+            var result = new int[length];
+            var bytes = NextBytes(length * sizeof(int));
+
+            for (var i = 0; i < bytes.Length; i += sizeof(int))
+            {
+                var randomInt = BitConverter.ToInt32(bytes, i) & 0x7FFFFFFF;
+                result[i / sizeof(int)] = randomInt;
+            }
+
+            return result;
         }
 
         internal static IEnumerable<T> Shuffle<T>(IEnumerable<T> collection)
@@ -61,14 +63,6 @@ namespace TokenGen.Generator
             return string.Join(null, Shuffle((IEnumerable<char>) str));
         }
 
-        private static int NextInt()
-        {
-            var bytes = NextBytes(sizeof(int));
-            int randomInt = BitConverter.ToInt32(bytes, 0) & 0x7FFFFFFF;
-
-            return randomInt;
-        }
-
         /// <summary>
         /// Generates an array of random bytes with specified length
         /// </summary>
@@ -76,14 +70,14 @@ namespace TokenGen.Generator
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static byte[] NextBytes(int length)
         {
-            var retResult = new byte[length];
+            var result = new byte[length];
 
             using (var rng = new RNGCryptoServiceProvider())
             {
-                rng.GetBytes(retResult);
+                rng.GetBytes(result);
             }
 
-            return retResult;
+            return result;
         }
     }
 }

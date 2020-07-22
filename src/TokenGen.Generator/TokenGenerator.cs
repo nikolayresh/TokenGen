@@ -38,26 +38,33 @@ namespace TokenGen.Generator
             return new RandomToken(tokenPayload, options);
         }
 
+        private static void AppendConsecutiveRange(StringBuilder token, ImmutableList<char[]> charSets)
+        {
+            var charSelectors = Randomizer.NextIntegers(charSets.Count);
+
+            for (var i = 0; i < charSets.Count; i++)
+            {
+                var set = charSets[i];
+                token.Append(set[charSelectors[i] % set.Length]);
+            }
+        }
+
         private static void AppendNonConsecutiveRange(StringBuilder token, ImmutableList<char[]> charSets, int length)
         {
+            if (length == 0)
+            {
+                return;
+            }
+
             var tuples = Randomizer.NextTuples(length);
 
-            for (var i = 0; i < tuples.Length; i++)
+            for (var i = 0; i < length; i++)
             {
                 var (SetNumber, CharNumber) = tuples[i];
                 var randomSet = charSets[SetNumber % charSets.Count];
                 var randomChar = randomSet[CharNumber % randomSet.Length];
 
                 token.Append(randomChar);
-            }
-        }
-
-        private static void AppendConsecutiveRange(StringBuilder token, ImmutableList<char[]> charSets)
-        {
-            for (var i = 0; i < charSets.Count; i++)
-            {
-                var set = charSets[i];
-                token.Append(Randomizer.SelectRandomItem(set));
             }
         }
 

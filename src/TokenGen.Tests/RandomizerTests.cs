@@ -13,6 +13,11 @@ namespace TokenGen.Tests
             int length;
             Tuple<int, int>[] tuples;
 
+            length = 327;
+            tuples = Randomizer.NextTuples(length);
+            Assert.NotNull(tuples);
+            Assert.AreEqual(327, tuples.Length);
+
             length = 133;
             tuples = Randomizer.NextTuples(length);
             Assert.NotNull(tuples);
