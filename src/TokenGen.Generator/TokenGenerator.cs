@@ -29,8 +29,8 @@ namespace TokenGen.Generator
 
             do
             {
-                token.Clear();
                 reRun = false;
+                token.Clear();
 
                 AppendConsecutivePart(token, charSets);
                 AppendNonConsecutivePart(token, charSets, options.TokenLength - charSets.Count);
@@ -38,14 +38,15 @@ namespace TokenGen.Generator
 
                 if (rules.Count > 0)
                 {
-                    var failedRules = new List<ITokenRule>();
-                    ApplyRules(rules, tokenPayload, failedRules);
+                    var failedRules = new List<ITokenRule>(rules.Where(x => !x.TryPass(tokenPayload)));
 
                     if (failedRules.Count > 0)
                     {
                         reRun = !failedRules.TrueForAll(x => x is IShuffleOnFailRule);
                         if (!reRun)
                         {
+                            tokenPayload = Randomizer.Shuffle(tokenPayload);
+
                             while (!failedRules.TrueForAll(x => x.TryPass(tokenPayload)))
                             {
                                 tokenPayload = Randomizer.Shuffle(tokenPayload);
@@ -57,12 +58,6 @@ namespace TokenGen.Generator
             } while (reRun);
 
             return new RandomToken(tokenPayload, options);
-        }
-
-        private static void ApplyRules(ImmutableList<ITokenRule> rules, string token, List<ITokenRule> failedRules)
-        {
-            failedRules.Clear();
-            failedRules.AddRange(rules.Where(rule => !rule.TryPass(token)));
         }
 
         private static void AppendConsecutivePart(StringBuilder token, ImmutableList<char[]> charSets)
