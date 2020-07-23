@@ -53,6 +53,24 @@ namespace TokenGen.Generator
         bool HasUpperCaseLetters { get; }
 
         /// <summary>
+        /// Returns a boolean value whether payload of a generated token contains
+        /// at least a single digit
+        /// </summary>
+        bool PayloadHasDigits { get; }
+
+        /// <summary>
+        /// Returns a boolean value whether payload of a token contains at least
+        /// a single lower-case letter
+        /// </summary>
+        bool PayloadHasLowerCaseLetters { get; }
+
+        /// <summary>
+        /// Returns a boolean value whether payload of a token contains at least
+        /// a single upper-case letter
+        /// </summary>
+        bool PayloadHasUpperCaseLetters { get; }
+
+        /// <summary>
         /// Appends full/complete content of generated token to a specified string builder 
         /// </summary>
         void CopyTo(StringBuilder sb);

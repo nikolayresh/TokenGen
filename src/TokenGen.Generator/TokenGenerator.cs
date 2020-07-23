@@ -137,9 +137,9 @@ namespace TokenGen.Generator
         {
             var rules = new List<ITokenRule>();
 
-            if (options.RequiredUniqueness != null)
+            if (options.UniqueCharsRequested != null)
             {
-                rules.Add(new TokenCharsUniquenessRule(options));
+                rules.Add(new TokenUniquenessRule(options));
             }
 
             if (options.ExcludedAtStart != null)

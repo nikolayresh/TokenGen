@@ -114,7 +114,7 @@ namespace TokenGen.Generator
             get => _excludedAtEnd;
         }
 
-        internal int RequiredUniqueness
+        internal int UniqueCharsRequested
         {
             get => _uniqueChars;
         }

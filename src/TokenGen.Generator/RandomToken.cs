@@ -86,6 +86,30 @@ namespace TokenGen.Generator
             }
         }
 
+        public bool PayloadHasDigits
+        {
+            get
+            {
+                return CharSetManager.ContainsAnyDigit(_payload);
+            }
+        }
+
+        public bool PayloadHasLowerCaseLetters
+        {
+            get
+            {
+                return CharSetManager.ContainsAnyLowerLetter(_payload);
+            }
+        }
+
+        public bool PayloadHasUpperCaseLetters
+        {
+            get
+            {
+                return CharSetManager.ContainsAnyUpperLetter(_payload);
+            }
+        }
+
         public void CopyTo(StringBuilder sb)
         {
             CopyTo(sb, RandomTokenParts.Prefix | RandomTokenParts.Payload | RandomTokenParts.Postfix);
