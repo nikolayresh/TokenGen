@@ -1,6 +1,6 @@
 ﻿namespace TokenGen.Generator.Rules
 {
-    internal class TokenNeverEndsWithRule : BaseTokenRule
+    internal class TokenNeverEndsWithRule : BaseTokenRule, IShuffleOnFail
     {
         public TokenNeverEndsWithRule(TokenOptions options) : base(options)
         {
@@ -8,9 +8,9 @@
 
         public override bool TryPass(string token)
         {
-            var lastSymbol = token[^1];
+            var lastChar = token[^1];
 
-            return !Options.ExcludedAtEnd.Contains(lastSymbol);
+            return !Options.ExcludedAtEnd.Contains(lastChar);
         }
     }
 }

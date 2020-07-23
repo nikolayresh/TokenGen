@@ -24,21 +24,55 @@ namespace TokenGen.Generator
             var token = new StringBuilder();
             var rules = ResolveRules(options);
             var charSets = CharSetManager.BuildCharSetsList(options.CharSets);
+            var reRun = false;
 
             do
             {
                 token.Clear();
 
-                AppendConsecutiveRange(token, charSets);
-                AppendNonConsecutiveRange(token, charSets, options.TokenLength - charSets.Count);
+                AppendConsecutivePart(token, charSets);
+                AppendNonConsecutivePart(token, charSets, options.TokenLength - charSets.Count);
                 tokenPayload = Randomizer.Shuffle(token.ToString());
 
-            } while (rules.Count > 0 && !rules.TrueForAll(x => x.TryPass(tokenPayload)));
+                if (rules.Count > 0)
+                {
+                    ITokenRule failedRule;
+                    reRun = !RunRules(rules, tokenPayload, out failedRule);
+
+                    if (reRun && failedRule is IShuffleOnFail)
+                    {
+                        reRun = false;
+                        tokenPayload = Randomizer.Shuffle(tokenPayload);
+
+                        while (!failedRule.TryPass(tokenPayload))
+                        {
+                            tokenPayload = Randomizer.Shuffle(tokenPayload);
+                        }
+                    }
+                }
+
+            } while (reRun);
 
             return new RandomToken(tokenPayload, options);
         }
 
-        private static void AppendConsecutiveRange(StringBuilder token, ImmutableList<char[]> charSets)
+        private static bool RunRules(List<ITokenRule> rules, string token, out ITokenRule failedRule)
+        {
+            failedRule = default;
+
+            foreach (var rule in rules)
+            {
+                if (!rule.TryPass(token))
+                {
+                    failedRule = rule;
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static void AppendConsecutivePart(StringBuilder token, ImmutableList<char[]> charSets)
         {
             var charSelectors = Randomizer.NextIntegers(charSets.Count);
 
@@ -49,7 +83,7 @@ namespace TokenGen.Generator
             }
         }
 
-        private static void AppendNonConsecutiveRange(StringBuilder token, ImmutableList<char[]> charSets, int length)
+        private static void AppendNonConsecutivePart(StringBuilder token, ImmutableList<char[]> charSets, int length)
         {
             if (length == 0)
             {
@@ -103,9 +137,9 @@ namespace TokenGen.Generator
         {
             var rules = new List<ITokenRule>();
 
-            if (options.UniqueChars != null)
+            if (options.RequiredUniqueness != null)
             {
-                rules.Add(new TokenUniquenessRule(options));
+                rules.Add(new TokenCharsUniquenessRule(options));
             }
 
             if (options.ExcludedAtStart != null)

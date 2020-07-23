@@ -13,7 +13,8 @@ namespace TokenGen.Tests
                 .WithDigits()
                 .WithUpperLetters()
                 .WithLowerLetters()
-                .WithLength(18);
+                .WithLength(18)
+                .WithUniqueChars(18);
 
             var token = TokenGenerator.Generate(options);
         }

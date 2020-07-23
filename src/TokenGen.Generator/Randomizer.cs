@@ -15,8 +15,8 @@ namespace TokenGen.Generator
         internal static Tuple<int,int>[] NextTuples(int length)
         {
             var tuples = new Tuple<int,int>[length];
-            var leftList = new List<int>(length / 2);
-            var rightList = new List<int>(length / 2);
+            var leftValues = new List<int>(length);
+            var rightValues = new List<int>(length);
 
             var bytes = NextBytes(2 * length * sizeof(int));
             var i = 0;
@@ -24,13 +24,13 @@ namespace TokenGen.Generator
             for (; i < bytes.Length; i += sizeof(int))
             { 
                 var randomInt = BitConverter.ToInt32(bytes, i) & 0x7FFFFFFF;
-                var list = (i < bytes.Length / 2) ? leftList : rightList;
+                var list = (i < bytes.Length / 2) ? leftValues : rightValues;
                 list.Add(randomInt);
             }
 
             for (i = 0; i < length; i++)
             {
-                tuples[i] = new Tuple<int, int>(leftList[i], rightList[i]);
+                tuples[i] = new Tuple<int, int>(leftValues[i], rightValues[i]);
             }
 
             return tuples;
