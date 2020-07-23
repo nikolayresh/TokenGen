@@ -5,7 +5,7 @@
     /// can be fixed without re-generating a new token
     /// by means of randomized character shuffling
     /// </summary>
-    internal interface IShuffleOnFail
+    internal interface IShuffleOnFailRule
     {
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace TokenGen.Generator.Rules
 {
-    internal class TokenNeverStartsWithRule : BaseTokenRule, IShuffleOnFail
+    internal class TokenNeverStartsWithRule : BaseTokenRule, IShuffleOnFailRule
     {
         public TokenNeverStartsWithRule(TokenOptions options) : base(options)
         {

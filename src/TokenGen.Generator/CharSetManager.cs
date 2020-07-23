@@ -12,7 +12,7 @@ namespace TokenGen.Generator
         /// <summary>
         /// Builds a joined read-only list of char sets specified by options
         /// </summary>
-        internal static ImmutableList<char[]> BuildCharSetsList(CharSetOptions sets)
+        internal static ImmutableList<char[]> BuildCharSets(CharSetOptions sets)
         {
             var charSets = new List<char[]>();
 
