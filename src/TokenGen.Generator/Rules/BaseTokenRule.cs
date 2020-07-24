@@ -13,5 +13,10 @@
         }
 
         public abstract bool TryPass(string token);
+
+        public virtual bool ShuffleTokenOnFail
+        {
+            get => false;
+        }
     }
 }

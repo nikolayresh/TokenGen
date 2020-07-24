@@ -38,7 +38,7 @@ namespace TokenGen.Generator
         }
 
         /// <summary>
-        /// Includes digits into alphabet of token symbols
+        /// Includes digits as part of a token
         /// </summary>
         public TokenOptions WithDigits()
         {
@@ -46,6 +46,9 @@ namespace TokenGen.Generator
             return this;
         }
 
+        /// <summary>
+        /// Includes lower-case English letters as part of a token
+        /// </summary>
         public TokenOptions WithLowerLetters()
         {
             _charSets |= CharSetOptions.LowerCaseLetters;
@@ -104,12 +107,12 @@ namespace TokenGen.Generator
             return this;
         }
 
-        internal HashSet<char> ExcludedAtStart
+        internal HashSet<char> CharsNeverAtStart
         {
             get => _excludedAtStart;
         }
 
-        internal HashSet<char> ExcludedAtEnd
+        internal HashSet<char> CharsNeverAtEnd
         {
             get => _excludedAtEnd;
         }

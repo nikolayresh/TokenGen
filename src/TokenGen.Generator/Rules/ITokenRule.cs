@@ -6,9 +6,15 @@
     internal interface ITokenRule
     {
         /// <summary>
-        /// Returns a boolean value whether rule was passed
+        /// Returns a boolean value whether this rule accepted a generated token
         /// </summary>
-        /// <param name="token">A generated token</param>
         bool TryPass(string token);
+
+        /// <summary>
+        /// Returns a boolean value whether this rule can accept
+        /// a failed token if to shuffle its content.
+        /// In this case a new token will not be generated
+        /// </summary>
+        bool ShuffleTokenOnFail { get; }
     }
 }

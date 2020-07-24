@@ -12,11 +12,14 @@ namespace TokenGen.Tests
             var options = new TokenOptions()
                 .WithDigits()
                 .WithUpperLetters()
-                .WithLowerLetters()
                 .WithLength(18)
-                .WithUniqueChars(18);
+                .WithUniqueChars(18)
+                .NeverStartsWith('0');
 
-            var token = TokenGenerator.Generate(options);
+            for (int i = 0; i < 1000; i++)
+            {
+                var token = TokenGenerator.Generate(options);
+            }
         }
     }
 }

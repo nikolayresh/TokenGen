@@ -29,8 +29,8 @@ namespace TokenGen.Generator
 
             do
             {
-                reRun = false;
                 token.Clear();
+                reRun = false;
 
                 AppendConsecutivePart(token, charSets);
                 AppendNonConsecutivePart(token, charSets, options.TokenLength - charSets.Count);
@@ -42,11 +42,10 @@ namespace TokenGen.Generator
 
                     if (failedRules.Count > 0)
                     {
-                        reRun = !failedRules.TrueForAll(x => x is IShuffleOnFailRule);
+                        reRun = !failedRules.TrueForAll(x => x.ShuffleTokenOnFail);
                         if (!reRun)
                         {
                             tokenPayload = Randomizer.Shuffle(tokenPayload);
-
                             while (!failedRules.TrueForAll(x => x.TryPass(tokenPayload)))
                             {
                                 tokenPayload = Randomizer.Shuffle(tokenPayload);
@@ -54,7 +53,6 @@ namespace TokenGen.Generator
                         }
                     }
                 }
-
             } while (reRun);
 
             return new RandomToken(tokenPayload, options);
@@ -130,12 +128,12 @@ namespace TokenGen.Generator
                 rules.Add(new TokenUniquenessRule(options));
             }
 
-            if (options.ExcludedAtStart != null)
+            if (options.CharsNeverAtStart != null)
             {
                 rules.Add(new TokenNeverStartsWithRule(options));
             }
 
-            if (options.ExcludedAtEnd != null)
+            if (options.CharsNeverAtEnd != null)
             {
                 rules.Add(new TokenNeverEndsWithRule(options));
             }
