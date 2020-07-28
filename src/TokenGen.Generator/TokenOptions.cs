@@ -7,13 +7,13 @@ namespace TokenGen.Generator
 {
     public sealed class TokenOptions : IOptions<TokenOptions>
     {
-        private const string TokenPartSeparator = "-";
+        public const string TokenPartSeparator = "-";
 
         private int _length;
-        private string? _prefix;
+        private string _prefix;
         private string _postfix;
-        private string _prefixSeparator = TokenPartSeparator;
-        private string _postfixSeparator = TokenPartSeparator;
+        private string _prefixSeparator;
+        private string _postfixSeparator;
         private CharSetOptions _charSets;
         private readonly CountValue _distinctChars = new CountValue();
         private readonly HashSet<char> _excludedAtStart = new HashSet<char>();
@@ -31,12 +31,14 @@ namespace TokenGen.Generator
         public TokenOptions WithPrefix(string prefix)
         {
             _prefix = prefix;
+            _prefixSeparator ??= TokenPartSeparator;
             return this;
         }
 
         public TokenOptions WithPostfix(string postfix)
         {
             _postfix = postfix;
+            _postfixSeparator ??= TokenPartSeparator;
             return this;
         }
 

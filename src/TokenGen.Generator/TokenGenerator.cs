@@ -117,6 +117,13 @@ namespace TokenGen.Generator
                     nameof(iOptions.Value.Length));
             }
 
+            if (options.CharSets == CharSetOptions.None)
+            {
+                throw new ArgumentException(
+                    "No character set selected",
+                    nameof(iOptions.Value.CharSets));
+            }
+
             if (options.DistinctChars.Count != null
                  && (options.DistinctChars.Count < 0 || options.DistinctChars.Count > options.Length))
             {

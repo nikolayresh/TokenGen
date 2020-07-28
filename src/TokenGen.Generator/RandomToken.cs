@@ -18,7 +18,9 @@ namespace TokenGen.Generator
         {
             get
             {
-                return Construct(RandomTokenParts.Prefix | RandomTokenParts.Payload | RandomTokenParts.Postfix);
+                return Construct(
+                    SysTokenParts.Prefix | SysTokenParts.PrefixSeparator | SysTokenParts.Payload
+                    | SysTokenParts.PostfixSeparator | SysTokenParts.Postfix);
             }
         }
 
@@ -26,7 +28,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return Construct(RandomTokenParts.Payload);
+                return Construct(SysTokenParts.Payload);
             }
         }
 
@@ -34,7 +36,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return Construct(RandomTokenParts.Prefix);
+                return Construct(SysTokenParts.Prefix);
             }
         }
 
@@ -42,7 +44,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return Construct(RandomTokenParts.Postfix);
+                return Construct(SysTokenParts.Postfix);
             }
         }
 
@@ -50,7 +52,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return Construct(RandomTokenParts.Payload | RandomTokenParts.Postfix);
+                return Construct(SysTokenParts.Payload | SysTokenParts.PostfixSeparator | SysTokenParts.Postfix);
             }
         }
 
@@ -58,7 +60,7 @@ namespace TokenGen.Generator
         {
             get
             {
-                return Construct(RandomTokenParts.Prefix | RandomTokenParts.Payload);
+                return Construct(SysTokenParts.Prefix | SysTokenParts.PrefixSeparator | SysTokenParts.Payload);
             }
         }
 
@@ -122,7 +124,29 @@ namespace TokenGen.Generator
                 throw new ArgumentNullException(nameof(sb));
             }
 
-            Construct(parts, sb);
+            SysTokenParts convertTokenParts()
+            {
+                SysTokenParts sysParts = SysTokenParts.None;
+
+                if ((parts & RandomTokenParts.Prefix) != 0)
+                {
+                    sysParts |= (SysTokenParts.Prefix | SysTokenParts.PrefixSeparator);
+                }
+
+                if ((parts & RandomTokenParts.Payload) != 0)
+                {
+                    sysParts |= SysTokenParts.Payload;
+                }
+
+                if ((parts & RandomTokenParts.Postfix) != 0)
+                {
+                    sysParts |= (SysTokenParts.PostfixSeparator | SysTokenParts.Postfix);
+                }
+
+                return sysParts;
+            }
+
+            Construct(convertTokenParts(), sb);
         }
 
         public override string ToString()
@@ -130,32 +154,32 @@ namespace TokenGen.Generator
             return Value;
         }
 
-        private string Construct(RandomTokenParts parts, StringBuilder sb = null)
+        private string Construct(SysTokenParts parts, StringBuilder sb = null)
         {
             sb ??= new StringBuilder();
 
-            if ((parts & RandomTokenParts.Prefix) != 0 && _options.Prefix != null)
+            if ((parts & SysTokenParts.Prefix) != 0 && _options.Prefix != null)
             {
                 sb.Append(_options.Prefix);
-
-                if (_options.PrefixSeparator != null)
-                {
-                    sb.Append(_options.PrefixSeparator);
-                }
             }
 
-            if ((parts & RandomTokenParts.Payload) != 0)
+            if ((parts & SysTokenParts.PrefixSeparator) != 0 && _options.PrefixSeparator != null)
+            {
+                sb.Append(_options.PrefixSeparator);
+            }
+
+            if ((parts & SysTokenParts.Payload) != 0)
             {
                 sb.Append(_payload);
             }
 
-            if ((parts & RandomTokenParts.Postfix) != 0 && _options.Postfix != null)
+            if ((parts & SysTokenParts.PostfixSeparator) != 0 && _options.PostfixSeparator != null)
             {
-                if (_options.PostfixSeparator != null)
-                {
-                    sb.Append(_options.PostfixSeparator);
-                }
+                sb.Append(_options.PostfixSeparator);
+            }
 
+            if ((parts & SysTokenParts.Postfix) != 0 && _options.Postfix != null)
+            {
                 sb.Append(_options.Postfix);
             }
 

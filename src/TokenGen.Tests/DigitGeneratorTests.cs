@@ -11,7 +11,6 @@ namespace TokenGen.Tests
         {
             var options = new TokenOptions()
                 .WithDigits()
-                .WithUpperLetters()
                 .WithLength(18)
                 .WithAllDistinctCharacters()
                 .NeverStartsWith('0')

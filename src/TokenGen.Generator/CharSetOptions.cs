@@ -9,6 +9,11 @@ namespace TokenGen.Generator
     internal enum CharSetOptions
     {
         /// <summary>
+        /// No char sets at all
+        /// </summary>
+        None = 0x00,
+
+        /// <summary>
         /// Character set of digits
         /// </summary>
         Digits = 0x01,
