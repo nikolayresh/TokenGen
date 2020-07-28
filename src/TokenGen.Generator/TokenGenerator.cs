@@ -43,7 +43,7 @@ namespace TokenGen.Generator
 
                     if (failedRules.Count > 0)
                     {
-                        reRun = !failedRules.TrueForAll(rule => rule.CanApplyOnShuffledToken);
+                        reRun = !failedRules.TrueForAll(rule => rule.CanReApplyOnShuffledToken);
                         if (!reRun)
                         {
                             tokenPayload = Randomizer.Shuffle(tokenPayload);
@@ -59,7 +59,7 @@ namespace TokenGen.Generator
             return new RandomToken(tokenPayload, options);
         }
 
-        private static void AppendConsecutivePart(StringBuilder token, ImmutableList<char[]> charSets)
+        private static void AppendConsecutivePart(StringBuilder token, ImmutableList<ImmutableArray<char>> charSets)
         {
             var charSelectors = Randomizer.NextIntegers(charSets.Count);
 
@@ -70,7 +70,7 @@ namespace TokenGen.Generator
             }
         }
 
-        private static void AppendNonConsecutivePart(StringBuilder token, ImmutableList<char[]> charSets, int length)
+        private static void AppendNonConsecutivePart(StringBuilder token, ImmutableList<ImmutableArray<char>> charSets, int length)
         {
             if (length == 0)
             {

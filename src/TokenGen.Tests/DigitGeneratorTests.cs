@@ -15,7 +15,7 @@ namespace TokenGen.Tests
                 .WithLength(18)
                 .WithAllDistinctCharacters()
                 .NeverStartsWith('0')
-                .WithPrefix("GTX-");
+                .WithPrefix("GTX");
 
             for (int i = 0; i < 1000; i++)
             {

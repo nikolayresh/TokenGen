@@ -137,6 +137,11 @@ namespace TokenGen.Generator
             if ((parts & RandomTokenParts.Prefix) != 0 && _options.Prefix != null)
             {
                 sb.Append(_options.Prefix);
+
+                if (_options.PrefixSeparator != null)
+                {
+                    sb.Append(_options.PrefixSeparator);
+                }
             }
 
             if ((parts & RandomTokenParts.Payload) != 0)
@@ -146,6 +151,11 @@ namespace TokenGen.Generator
 
             if ((parts & RandomTokenParts.Postfix) != 0 && _options.Postfix != null)
             {
+                if (_options.PostfixSeparator != null)
+                {
+                    sb.Append(_options.PostfixSeparator);
+                }
+
                 sb.Append(_options.Postfix);
             }
 

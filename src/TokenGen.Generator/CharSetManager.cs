@@ -5,16 +5,16 @@ namespace TokenGen.Generator
 {
     internal static class CharSetManager
     {
-        private static readonly char[] Digits = "0123456789".ToCharArray();
-        private static readonly char[] LowerLetters = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
-        private static readonly char[] UpperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+        private static readonly ImmutableArray<char> Digits = "0123456789".ToCharArray().ToImmutableArray();
+        private static readonly ImmutableArray<char> LowerLetters = "abcdefghijklmnopqrstuvwxyz".ToCharArray().ToImmutableArray();
+        private static readonly ImmutableArray<char> UpperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray().ToImmutableArray();
 
         /// <summary>
         /// Builds a joined read-only list of char sets specified by options
         /// </summary>
-        internal static ImmutableList<char[]> BuildCharSets(CharSetOptions sets)
+        internal static ImmutableList<ImmutableArray<char>> BuildCharSets(CharSetOptions sets)
         {
-            var charSets = new List<char[]>();
+            var charSets = new List<ImmutableArray<char>>();
 
             if ((sets & CharSetOptions.Digits) != 0)
             {

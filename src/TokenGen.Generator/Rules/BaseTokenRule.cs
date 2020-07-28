@@ -14,7 +14,7 @@
 
         public abstract bool TryApply(string token);
 
-        public virtual bool CanApplyOnShuffledToken
+        public virtual bool CanReApplyOnShuffledToken
         {
             get => false;
         }

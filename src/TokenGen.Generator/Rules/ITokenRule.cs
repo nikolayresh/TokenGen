@@ -15,6 +15,6 @@
         /// a failed token if to shuffle its content.
         /// In this case a new token will not be created by generator
         /// </summary>
-        bool CanApplyOnShuffledToken { get; }
+        bool CanReApplyOnShuffledToken { get; }
     }
 }

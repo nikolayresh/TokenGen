@@ -6,7 +6,7 @@
         {
         }
 
-        public override bool CanApplyOnShuffledToken
+        public override bool CanReApplyOnShuffledToken
         {
             get => true;
         }
