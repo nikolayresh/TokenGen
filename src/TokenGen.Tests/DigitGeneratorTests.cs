@@ -13,8 +13,9 @@ namespace TokenGen.Tests
                 .WithDigits()
                 .WithUpperLetters()
                 .WithLength(18)
-                .WithUniqueChars(18)
-                .NeverStartsWith('0');
+                .WithAllDistinctCharacters()
+                .NeverStartsWith('0')
+                .WithPrefix("GTX-");
 
             for (int i = 0; i < 1000; i++)
             {

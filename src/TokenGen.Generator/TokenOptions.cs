@@ -11,10 +11,9 @@ namespace TokenGen.Generator
         private string _prefix;
         private string _postfix;
         private CharSetOptions _charSets;
-        private int _uniqueChars;
-        private bool _allCharsUnique;
-        private HashSet<char> _excludedAtStart;
-        private HashSet<char> _excludedAtEnd;
+        private readonly CountValue _distinctChars = new CountValue();
+        private readonly HashSet<char> _excludedAtStart = new HashSet<char>();
+        private readonly HashSet<char> _excludedAtEnd = new HashSet<char>();
 
         /// <summary>
         /// Sets desirable length of token
@@ -61,17 +60,27 @@ namespace TokenGen.Generator
             return this;
         }
 
-        public TokenOptions WithUniqueChars(int count)
+        public TokenOptions WithAllDistinctCharacters()
         {
-            _uniqueChars = count;
-            _allCharsUnique = false;
+            _distinctChars.All = true;
             return this;
+        }
+
+        public TokenOptions WithDistinctCharacters(int count, bool exact)
+        {
+            _distinctChars.Count = count;
+            _distinctChars.Exact = exact;
+            return this;
+        }
+
+        public TokenOptions WithDistinctCharacters(int count)
+        {
+            return WithDistinctCharacters(count, exact: false);
         }
 
         public TokenOptions NeverStartsWith(char ch)
         {
-            var set = _excludedAtStart ??= new HashSet<char>();
-            set.Add(ch);
+            _excludedAtStart.Add(ch);
             return this;
         }
 
@@ -82,16 +91,13 @@ namespace TokenGen.Generator
                 throw new ArgumentNullException(nameof(chars));
             }
 
-            var set = _excludedAtStart ??= new HashSet<char>();
-            chars.ToList().ForEach(x => set.Add(x));
-
+            chars.ToList().ForEach(ch => _excludedAtStart.Add(ch));
             return this;
         }
 
-        public TokenOptions NeverEndsWith(char symbol)
+        public TokenOptions NeverEndsWith(char ch)
         {
-            var set = _excludedAtEnd ??= new HashSet<char>();
-            set.Add(symbol);
+            _excludedAtEnd.Add(ch);
             return this;
         }
 
@@ -102,8 +108,7 @@ namespace TokenGen.Generator
                 throw new ArgumentNullException(nameof(chars));
             }
 
-            var set = _excludedAtEnd ??= new HashSet<char>();
-            chars.ToList().ForEach(x => set.Add(x));
+            chars.ToList().ForEach(ch => _excludedAtEnd.Add(ch));
             return this;
         }
 
@@ -117,14 +122,9 @@ namespace TokenGen.Generator
             get => _excludedAtEnd;
         }
 
-        internal int UniqueCharsRequested
+        internal CountValue DistinctChars
         {
-            get => _uniqueChars;
-        }
-
-        internal bool AllCharsUnique
-        {
-            get => _allCharsUnique;
+            get => _distinctChars;
         }
 
         internal string Prefix
@@ -140,7 +140,7 @@ namespace TokenGen.Generator
         /// <summary>
         /// Returns a user-specified length of token to generate
         /// </summary>
-        internal int TokenLength
+        internal int Length
         {
             get => _length;
         }

@@ -33,7 +33,7 @@ namespace TokenGen.Generator
                 reRun = false;
 
                 AppendConsecutivePart(token, charSets);
-                AppendNonConsecutivePart(token, charSets, options.TokenLength - charSets.Count);
+                AppendNonConsecutivePart(token, charSets, options.Length - charSets.Count);
                 tokenPayload = Randomizer.Shuffle(token.ToString());
 
                 if (rules.Count > 0)
@@ -102,18 +102,26 @@ namespace TokenGen.Generator
                 throw new ArgumentNullException(nameof(iOptions.Value));
             }
 
-            if (options.TokenLength <= 0)
+            if (options.Length <= 0)
             {
                 throw new ArgumentException(
                     "Length of token must be a positive integer", 
-                    nameof(iOptions.Value.TokenLength));
+                    nameof(iOptions.Value.Length));
             }
 
-            if (options.TokenLength < CharSetManager.GetSetsCount(options.CharSets))
+            if (options.Length < CharSetManager.GetSetsCount(options.CharSets))
             {
                 throw new ArgumentException(
                     "Length of token must be greater or equal to count of character sets",
-                    nameof(iOptions.Value.TokenLength));
+                    nameof(iOptions.Value.Length));
+            }
+
+            if (options.DistinctChars.Count.HasValue
+                 && (options.DistinctChars.Count < 0 || options.DistinctChars.Count > options.Length))
+            {
+                throw new ArgumentException(
+                    $"Count of unique characters must be defined on range [0 - {options.DistinctChars.Count}]",
+                    nameof(iOptions.Value.DistinctChars.Count));
             }
 
             return options;
@@ -123,17 +131,17 @@ namespace TokenGen.Generator
         {
             var rules = new List<ITokenRule>();
 
-            if (options.UniqueCharsRequested > 0)
+            if (options.DistinctChars.Count > 0 || options.DistinctChars.All)
             {
-                rules.Add(new TokenUniquenessRule(options));
+                rules.Add(new TokenDistinctionRule(options));
             }
 
-            if (options.CharsNeverAtStart != null)
+            if (options.CharsNeverAtStart.Count > 0)
             {
                 rules.Add(new TokenNeverStartsWithRule(options));
             }
 
-            if (options.CharsNeverAtEnd != null)
+            if (options.CharsNeverAtEnd.Count > 0)
             {
                 rules.Add(new TokenNeverEndsWithRule(options));
             }
