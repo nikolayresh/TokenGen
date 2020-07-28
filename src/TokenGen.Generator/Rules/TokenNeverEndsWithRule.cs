@@ -6,12 +6,12 @@
         {
         }
 
-        public override bool ShuffleTokenOnFail
+        public override bool CanApplyOnShuffledToken
         {
             get => true;
         }
 
-        public override bool TryPass(string token)
+        public override bool TryApply(string token)
         {
             var lastChar = token[^1];
 

@@ -30,6 +30,7 @@ namespace TokenGen.Generator
             do
             {
                 token.Clear();
+                tokenPayload = null;
                 reRun = false;
 
                 AppendConsecutivePart(token, charSets);
@@ -38,15 +39,15 @@ namespace TokenGen.Generator
 
                 if (rules.Count > 0)
                 {
-                    var failedRules = new List<ITokenRule>(rules.Where(x => !x.TryPass(tokenPayload)));
+                    var failedRules = new List<ITokenRule>(rules.Where(rule => !rule.TryApply(tokenPayload)));
 
                     if (failedRules.Count > 0)
                     {
-                        reRun = !failedRules.TrueForAll(x => x.ShuffleTokenOnFail);
+                        reRun = !failedRules.TrueForAll(rule => rule.CanApplyOnShuffledToken);
                         if (!reRun)
                         {
                             tokenPayload = Randomizer.Shuffle(tokenPayload);
-                            while (!failedRules.TrueForAll(x => x.TryPass(tokenPayload)))
+                            while (!failedRules.TrueForAll(rule => rule.TryApply(tokenPayload)))
                             {
                                 tokenPayload = Randomizer.Shuffle(tokenPayload);
                             }
@@ -116,11 +117,11 @@ namespace TokenGen.Generator
                     nameof(iOptions.Value.Length));
             }
 
-            if (options.DistinctChars.Count.HasValue
+            if (options.DistinctChars.Count != null
                  && (options.DistinctChars.Count < 0 || options.DistinctChars.Count > options.Length))
             {
                 throw new ArgumentException(
-                    $"Count of unique characters must be defined on range [0 - {options.DistinctChars.Count}]",
+                    $"Count of distinct characters must be defined on range [0 - {options.DistinctChars.Count}]",
                     nameof(iOptions.Value.DistinctChars.Count));
             }
 

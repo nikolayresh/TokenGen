@@ -12,9 +12,9 @@
             get;
         }
 
-        public abstract bool TryPass(string token);
+        public abstract bool TryApply(string token);
 
-        public virtual bool ShuffleTokenOnFail
+        public virtual bool CanApplyOnShuffledToken
         {
             get => false;
         }

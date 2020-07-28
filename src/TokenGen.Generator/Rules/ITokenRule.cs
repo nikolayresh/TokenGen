@@ -6,15 +6,15 @@
     internal interface ITokenRule
     {
         /// <summary>
-        /// Returns a boolean value whether this rule accepted a generated token
+        /// Returns a boolean value whether this rule was successfully applied on a specified token
         /// </summary>
-        bool TryPass(string token);
+        bool TryApply(string token);
 
         /// <summary>
         /// Returns a boolean value whether this rule can accept
         /// a failed token if to shuffle its content.
-        /// In this case a new token will not be generated
+        /// In this case a new token will not be created by generator
         /// </summary>
-        bool ShuffleTokenOnFail { get; }
+        bool CanApplyOnShuffledToken { get; }
     }
 }

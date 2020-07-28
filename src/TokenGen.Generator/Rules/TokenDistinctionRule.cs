@@ -11,9 +11,9 @@ namespace TokenGen.Generator.Rules
         {
         }
 
-        public override bool TryPass(string token)
+        public override bool TryApply(string token)
         {
-            var distinctChars = CountUniqueChars(token);
+            var distinctChars = CountDistinctChars(token);
 
             return Options.DistinctChars.All
                 ? (distinctChars == Options.Length)
@@ -25,25 +25,25 @@ namespace TokenGen.Generator.Rules
         /// <summary>
         /// Calculates count of unique/distinct characters in a specified token 
         /// </summary>
-        private static int CountUniqueChars(string token)
+        private static int CountDistinctChars(string token)
         {
             var chars = token.ToCharArray();
             Array.Sort(chars);
 
             var length = chars.Length;
-            var unique = 0;
+            var count = 0;
 
             for (var i = 0; i < length; i++)
             {
-                while (i < length - 1 && chars[i] == chars[i + 1])
+                while (i < (length - 1) && chars[i] == chars[i + 1])
                 {
                     i++;
                 }
 
-                unique++;
+                count++;
             }
 
-            return unique;
+            return count;
         }
     }
 }
